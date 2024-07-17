@@ -4,6 +4,9 @@ import { createTable } from '@/data/database';
 
 
 export default function Index() {
+  useEffect(()=>{
+    createTable()
+  },[])
 
   return (
     <View
@@ -13,7 +16,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text style={{ color: 'white' }}>Edit app/index.tsx to edit this screen</Text>
+      <Text>Edit app/index.tsx to edit this screen</Text>
     </View>
   );
 }
