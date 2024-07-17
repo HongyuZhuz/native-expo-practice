@@ -1,7 +1,10 @@
 import {Text, View} from 'react-native'
+import { useEffect } from 'react';
+import { createTable } from '@/data/database';
 
 
 export default function Index() {
+
   return (
     <View
       style={{
