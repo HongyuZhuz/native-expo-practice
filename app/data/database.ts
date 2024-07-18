@@ -1,15 +1,15 @@
 import * as SQLite from 'expo-sqlite';
+import { v4 as uuidv4 } from 'uuid';
 
 let db;
 
 export async function createTable() {
   try {
     console.log("try to do that")
-    // 打开数据库
-    db = await SQLite.openDatabaseAsync('testDatabase');
-    console.log(db); // 打印数据库对象以调试
 
-    // 使用 execAsync 执行创建表的 SQL 语句
+    db = await SQLite.openDatabaseAsync('testDatabase');
+    console.log(db); 
+
     await db.execAsync(`
       PRAGMA journal_mode = WAL;
       CREATE TABLE IF NOT EXISTS Account (
@@ -34,7 +34,6 @@ export async function createTable() {
 
     console.log("Tables created successfully");
 
-    // 获取表信息
     const result = await db.getAllAsync('PRAGMA table_info(Bill)');
     const tableInfo = result.map(row=> ({
         name: row.name,
@@ -45,4 +44,14 @@ export async function createTable() {
   } catch (e) {
     console.error("Failed to create table", e);
   }
+}
+
+async function readExcelAndInsertData () {
+  return
+}
+
+
+//need to change bill_id and account_id's type from integer to text
+export async function insertBill (type:string,amount:number, discrption:string,target_account_id:number) {
+  const account_id = uuidv4();
 }
