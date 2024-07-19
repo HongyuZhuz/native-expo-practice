@@ -1,6 +1,7 @@
-import {Text, View} from 'react-native'
+import {Text, View,Button} from 'react-native'
 import { useEffect } from 'react';
-import { createTable } from '@/data/database';
+import { createTable } from './data/database';
+import { createAccount } from './data/database';
 
 
 export default function Index() {
@@ -16,7 +17,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen</Text>
+      <Text style = {{color:`white`}}>Edit app/index.tsx to edit this screen</Text>
+      <Button onPress={()=>createAccount('travel')} title='createAccount'></Button>
+      
     </View>
   );
 }
