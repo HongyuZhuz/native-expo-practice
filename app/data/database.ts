@@ -33,14 +33,13 @@ export async function createTable() {
       );
     `);
 
-    console.log("Tables created successfully");
 
     const result = await db.getAllAsync('PRAGMA table_info(Bill)');
     const tableInfo = result.map(row=> ({
         name: row.name,
         type: row.type
       }));
-      console.log('Table info:', JSON.stringify(tableInfo, null, 2));
+  
 
   } catch (e) {
     console.error("Failed to create table", e);
@@ -59,7 +58,6 @@ export async function insertBill (type:string,amount:number, discrption:string,t
 }
 
 export async function createAccount (account_name:string){
-  console.log("try to create uuid")
   const account_id = uuidv4();
   console.log(account_id)
   db = await SQLite.openDatabaseAsync('testDatabase2');
@@ -70,12 +68,24 @@ export async function createAccount (account_name:string){
   )
   try {
     let result = await statement.executeAsync({$account_id:account_id,$account_name:account_name});
-    console.log (`${account_id} and ${account_name} :`, result.lastInsertRowId, result.changes)
 
-    const r = await db.getAllAsync('SELECT * FROM Account');
-    console.log(r)
+
+    //test for success insert
+    //console.log (`${account_id} and ${account_name} :`, result.lastInsertRowId, result.changes)
+    /*const r = await db.getAllAsync('SELECT * FROM Account');
+    console.log(r)*/
 
   }finally{
     await statement.finalizeAsync();
+  }
+}
+
+export async function getAccounts () {
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    const allRows = await db.getAllAsync(`SELECT * FROM Account`)
+    return allRows
+  }catch(e){
+    return ("get all accounts error" + e)
   }
 }

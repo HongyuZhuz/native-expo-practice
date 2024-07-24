@@ -1,13 +1,14 @@
 import {Text, View,Button} from 'react-native'
-import { useEffect } from 'react';
-import { createTable } from './data/database';
-import { createAccount } from './data/database';
+import { useEffect} from 'react';
+import { createTable, createAccount, } from './data/database';
+import AccountTable from './ui/accountTable';
 
 
 export default function Index() {
   useEffect(()=>{
     createTable()
   },[])
+
 
   return (
     <View
@@ -17,8 +18,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text style = {{color:`white`}}>Edit app/index.tsx to edit this screen</Text>
-      <Button onPress={()=>createAccount('travel')} title='createAccount'></Button>
+      <Text style = {{color:`white`}}>Here is the test</Text>
+      <Button onPress={()=>createAccount('test2')} title='createAccount'></Button>
+      <AccountTable/>
       
     </View>
   );
