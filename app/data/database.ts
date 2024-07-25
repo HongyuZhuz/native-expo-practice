@@ -97,7 +97,7 @@ export async function deleteAccountById (account_id:string) {
     console.log ("deleted")
   }catch(e){
     return("deleted accounts error" + e)
-    
+
   }
 }
 
@@ -111,5 +111,15 @@ export async function deleteAllAccounts () {
     console.log("delete failed")
     return("deleted all accounts error" + e)
 
+  }
+}
+
+export async function updateAccount (account_id:string,account_name:string) {
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    await db.runAsync('UPDATE account SET account_name = ?, created_at = CURRENT_TIMESTAMP WHERE account_id = ?',account_name,account_id)
+    console.log("updated")
+  }catch(e){
+    console.log("update account fail")
   }
 }

@@ -1,6 +1,6 @@
 import {Text, View,Button} from 'react-native'
 import { useEffect} from 'react';
-import { createTable, createAccount, deleteAccountById, deleteAllAccounts} from './data/database';
+import { createTable, createAccount, deleteAccountById, deleteAllAccounts, updateAccount} from './data/database';
 import AccountTable from './ui/accountTable';
 
 
@@ -30,6 +30,7 @@ export default function Index() {
   <View>
       <Button onPress={()=>deleteAccountById('a48e4a99-e063-4c79-814e-6cd95f594ffd')} title = 'delete account'></Button>
       <Button onPress={()=>deleteAllAccounts()} title = 'delete all accounts'></Button>
+      <Button onPress={()=>updateAccount('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','updated')} title = 'update account'></Button>
       </View>
       
       
