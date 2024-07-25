@@ -89,3 +89,27 @@ export async function getAccounts () {
     return ("get all accounts error" + e)
   }
 }
+
+export async function deleteAccountById (account_id:string) {
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    await db.runAsync(`DELETE FROM account WHERE account_id = $account_id`, {$account_id:account_id})
+    console.log ("deleted")
+  }catch(e){
+    return("deleted accounts error" + e)
+    
+  }
+}
+
+export async function deleteAllAccounts () {
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    await db.runAsync(`DELETE FROM account `)
+    console.log ("deleted all")
+
+  }catch(e){
+    console.log("delete failed")
+    return("deleted all accounts error" + e)
+
+  }
+}
