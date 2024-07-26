@@ -7,8 +7,9 @@ let db;
 export async function createTable() {
   try {
     console.log("try to do that")
+    
 
-    db = await SQLite.openDatabaseAsync('testDatabase');
+    db = await SQLite.openDatabaseAsync('testDatabase2');
     console.log(db); 
 
     await db.execAsync(`
@@ -34,11 +35,46 @@ export async function createTable() {
     `);
 
 
-    const result = await db.getAllAsync('PRAGMA table_info(Bill)');
-    const tableInfo = result.map(row=> ({
-        name: row.name,
-        type: row.type
-      }));
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_income
+    AFTER INSERT ON Bill
+    WHEN NEW.type = 'income'
+    BEGIN
+      UPDATE Account
+      SET account_balance = account_balance + NEW.amount
+      WHERE account_id = NEW.account_id;
+    END;`
+    )
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_cost
+    AFTER INSERT ON Bill
+    WHEN NEW.type = 'cost'
+    BEGIN
+      UPDATE Account
+      SET account_balance = account_balance - NEW.amount
+      WHERE account_id = NEW.account_id;
+    END;`
+    )
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_transfer_source
+    AFTER INSERT ON Bill
+    WHEN NEW.type = 'transfer'
+    BEGIN
+      UPDATE Account
+      SET account_balance = account_balance - NEW.amount
+      WHERE account_id = NEW.account_id;
+    END;`
+    )
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_transfer_target
+    AFTER INSERT ON Bill
+    WHEN NEW.type = 'transfer'
+    BEGIN
+      UPDATE Account
+      SET account_balance = account_balance + NEW.amount
+      WHERE account_id = NEW.target_account_id;
+    END;`
+    )
   
 
   } catch (e) {
@@ -46,16 +82,7 @@ export async function createTable() {
   }
 }
 
-async function readExcelAndInsertData () {
-  return
-}
 
-
-//need to change bill_id and account_id's type from integer to text
-export async function insertBill (type:string,amount:number, discrption:string,target_account_id:number) {
-  const bill_id = uuidv4();
-  
-}
 
 export async function createAccount (account_name:string){
   const account_id = uuidv4();
@@ -121,5 +148,36 @@ export async function updateAccount (account_id:string,account_name:string) {
     console.log("updated")
   }catch(e){
     console.log("update account fail")
+  }
+}
+
+export async function getBills () {
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    const allRows = await db.getAllAsync(`SELECT * FROM Bill`)
+    return allRows
+  }catch(e){
+    return ("get all bills error" + e)
+  }
+}
+
+
+type BillType = 'income'|'cost'|'transfer'
+export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="") {
+  const bill_id = uuidv4();
+
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  const statement = await db.prepareAsync(
+    `INSERT INTO Bill (bill_id,account_id,type,amount,description,created_at,target_account_id)  
+    VALUES ($bill_id,$account_id,$type, $amount,$description,CURRENT_TIMESTAMP,$target_account_id);
+    `
+  )
+  try {
+    let result = await statement.executeAsync({$bill_id:bill_id, $account_id:account_id,$type:type,$amount:amount,$description:description,$target_account_id:target_account_id});
+    console.log("try to update bill")
+    console.log(result)
+
+  }finally{
+    await statement.finalizeAsync();
   }
 }
