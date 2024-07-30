@@ -94,30 +94,25 @@ export async function createTable() {
         WHERE account_id = OLD.account_id;
       END; `
     )
+
+    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete_transfer_source')
+    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete_transfer_target')
   
     await db.execAsync(
-      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer_source
+      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer
       AFTER DELETE ON Bill
       WHEN OLD.type = 'transfer'
       BEGIN
         UPDATE Account
         SET account_balance = account_balance + OLD.amount
         WHERE account_id = OLD.account_id;
-      END; `
-    )
-    
-    await db.execAsync(
-      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer_target
-      AFTER DELETE ON Bill
-      WHEN OLD.type = 'transfer'
-      BEGIN
+
         UPDATE Account
         SET account_balance = account_balance - OLD.amount
         WHERE account_id = OLD.target_account_id;
       END; `
     )
     
-  
 
   } catch (e) {
     console.error("Failed to create table", e);
