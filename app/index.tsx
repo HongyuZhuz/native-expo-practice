@@ -38,7 +38,7 @@ export default function Index() {
       <Button onPress={()=>deleteAccountById('a48e4a99-e063-4c79-814e-6cd95f594ffd')} title = 'delete account'></Button>
       <Button onPress={()=>deleteAllAccounts()} title = 'delete all accounts'></Button>
       <Button onPress={()=>updateAccount('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','updated')} title = 'update account'></Button>
-      <Button onPress={()=>deleteBill('0819ce6b-3fb5-40ba-93d4-517b4e0f4b8a')} title = 'delete bill'></Button>
+      <Button onPress={()=>deleteBill('65226b62-3725-4946-b6e2-cab1e20bf4f2')} title = 'delete bill'></Button>
   </View>
     </View>
   );

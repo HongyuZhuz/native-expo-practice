@@ -74,7 +74,6 @@ export async function createTable() {
       WHERE account_id = NEW.target_account_id;
     END;`
     )
-    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete')
     await db.execAsync(
       `CREATE TRIGGER IF NOT EXISTS update_balance_delete_income
       AFTER DELETE ON Bill
@@ -85,6 +84,39 @@ export async function createTable() {
         WHERE account_id = OLD.account_id;
       END; `
     )
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_cost
+      AFTER DELETE ON Bill
+      WHEN OLD.type = 'cost'
+      BEGIN
+        UPDATE Account
+        SET account_balance = account_balance + OLD.amount
+        WHERE account_id = OLD.account_id;
+      END; `
+    )
+  
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer_source
+      AFTER DELETE ON Bill
+      WHEN OLD.type = 'transfer'
+      BEGIN
+        UPDATE Account
+        SET account_balance = account_balance + OLD.amount
+        WHERE account_id = OLD.account_id;
+      END; `
+    )
+    
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer_target
+      AFTER DELETE ON Bill
+      WHEN OLD.type = 'transfer'
+      BEGIN
+        UPDATE Account
+        SET account_balance = account_balance - OLD.amount
+        WHERE account_id = OLD.target_account_id;
+      END; `
+    )
+    
   
 
   } catch (e) {
