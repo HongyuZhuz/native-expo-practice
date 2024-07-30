@@ -7,7 +7,6 @@ let db;
 export async function createTable() {
   try {
     console.log("try to do that")
-    
 
     db = await SQLite.openDatabaseAsync('testDatabase2');
     console.log(db); 
@@ -74,6 +73,17 @@ export async function createTable() {
       SET account_balance = account_balance + NEW.amount
       WHERE account_id = NEW.target_account_id;
     END;`
+    )
+    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete')
+    await db.execAsync(
+      `CREATE TRIGGER IF NOT EXISTS update_balance_delete_income
+      AFTER DELETE ON Bill
+      WHEN OLD.type = 'income'
+      BEGIN
+        UPDATE Account
+        SET account_balance = account_balance - OLD.amount
+        WHERE account_id = OLD.account_id;
+      END; `
     )
   
 
@@ -155,6 +165,7 @@ export async function getBills () {
   db = await SQLite.openDatabaseAsync('testDatabase2');
   try{
     const allRows = await db.getAllAsync(`SELECT * FROM Bill`)
+    console.log('bills' +allRows)
     return allRows
   }catch(e){
     return ("get all bills error" + e)
@@ -179,5 +190,15 @@ export async function createBill (account_id:string,type:BillType,amount:number,
 
   }finally{
     await statement.finalizeAsync();
+  }
+}
+
+export async function deleteBill (bill_id:string){
+  db = await SQLite.openDatabaseAsync('testDatabase2');
+  try{
+    await db.runAsync('DELETE FROM Bill WHERE bill_id = $bill_id', {$bill_id : bill_id})
+    console.log('dlete succeed')
+  }catch(e){
+    console.log("delete bill failed" + e)
   }
 }
