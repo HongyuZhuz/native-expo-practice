@@ -39,7 +39,7 @@ export default function Index() {
       <Button onPress={()=>deleteAllAccounts()} title = 'delete all accounts'></Button>
       <Button onPress={()=>updateAccount('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','updated')} title = 'update account'></Button>
       <Button onPress={()=>deleteBill('23c66c78-6a71-418d-a6f7-217538d17596')} title = 'delete bill'></Button>
-      <Button title='update bill test' onPress={()=>updateBill('d82c5745-c3cc-4728-9cac-324641c0912f','b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','transfer',15,"","",'2024-07-31 02:00:00')}></Button>
+      <Button title='update bill test' onPress={()=>updateBill('d82c5745-c3cc-4728-9cac-324641c0912f','b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','cost',25,"test","","2024-07-26 01:50:36")}></Button>
   </View>
     </View>
   );

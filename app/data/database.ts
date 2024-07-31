@@ -197,8 +197,11 @@ export async function getBills () {
 
 
 type BillType = 'income'|'cost'|'transfer'
-export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="") {
-  const bill_id = uuidv4();
+export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="",bill_id?:string) {
+  if (!bill_id) {
+    bill_id = uuidv4();
+  }
+  
 
   db = await SQLite.openDatabaseAsync('testDatabase2');
   const statement = await db.prepareAsync(
@@ -227,12 +230,29 @@ export async function deleteBill (bill_id:string){
 }
 
 export async function updateBill (bill_id:string,account_id:string,type:BillType,amount:number,description:string="",target_account_id:string="",create_at:string){
-  const dataList = [account_id,type,amount,description,target_account_id,create_at,bill_id]
   try{
     db = await SQLite.openDatabaseAsync('testDatabase2');
-    await db.runAsync('UPDATE Bill SET account_id =?, type=?, amount = ?,description=?,target_account_id=?, created_at=? WHERE bill_id =?',dataList);
-    console.log('update bill succeed')
+    deleteBill(bill_id)
+    createBill(account_id,type,amount,description,target_account_id,bill_id)
+    //can't change timestamp here
+    await db.runAsync(`UPDATE Bill SET created_at= ? WHERE bill_id = ? `,create_at,bill_id)
+
   }catch(e){
     console.log("update bill failed"+e)
+  }
+}
+
+export async function getBillById(bill_id:string){
+  try{
+    db = await SQLite.openDatabaseAsync('testDatabase2');
+    const bill = await db.getFirstAsync(`SELECT * FROM Bill WHERE bill_id =?`,bill_id)
+    if (bill){
+      return bill
+    }else{
+      console.log("didn't find the bill")
+      return null;
+    }
+  }catch(e){
+    console.log("find bill by id error:" + e)
   }
 }
