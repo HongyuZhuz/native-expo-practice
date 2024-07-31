@@ -230,16 +230,20 @@ export async function deleteBill (bill_id:string){
 }
 
 export async function updateBill (bill_id:string,account_id:string,type:BillType,amount:number,description:string="",target_account_id:string="",create_at:string){
+  db = await SQLite.openDatabaseAsync('testDatabase2');
   try{
-    db = await SQLite.openDatabaseAsync('testDatabase2');
-    deleteBill(bill_id)
-    createBill(account_id,type,amount,description,target_account_id,bill_id)
+    
+    await deleteBill(bill_id)
+    await createBill(account_id,type,amount,description,target_account_id,bill_id)
     //can't change timestamp here
-    await db.runAsync(`UPDATE Bill SET created_at= ? WHERE bill_id = ? `,create_at,bill_id)
+
+    await db.runAsync('UPDATE Bill SET created_at= ? WHERE bill_id = ? ',create_at,bill_id)
+    
 
   }catch(e){
     console.log("update bill failed"+e)
   }
+
 }
 
 export async function getBillById(bill_id:string){

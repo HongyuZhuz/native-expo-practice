@@ -21,10 +21,10 @@ export default function Index() {
     >
       <View>
       <Text style = {{color:`white`}}>Here is the test</Text>
-      <Button onPress={()=>createAccount('test2')} title='createAccount'></Button>
+      <Button onPress={()=>createAccount('test3')} title='createAccount'></Button>
       </View>
       <View>
-        <Button onPress={()=>createBill('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','transfer',5,'cf70b257-02ec-400b-b4d3-a4a8df8d6309','cf70b257-02ec-400b-b4d3-a4a8df8d6309')} title = 'Create Bill'></Button>
+        <Button onPress={()=>createBill('c42a5364-5b5f-4276-9b5b-18269f2e80b7','income',5,'','')} title = 'Create Bill'></Button>
       </View>
       
       <View style={{alignItems:'center'}}>
@@ -38,8 +38,8 @@ export default function Index() {
       <Button onPress={()=>deleteAccountById('a48e4a99-e063-4c79-814e-6cd95f594ffd')} title = 'delete account'></Button>
       <Button onPress={()=>deleteAllAccounts()} title = 'delete all accounts'></Button>
       <Button onPress={()=>updateAccount('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','updated')} title = 'update account'></Button>
-      <Button onPress={()=>deleteBill('23c66c78-6a71-418d-a6f7-217538d17596')} title = 'delete bill'></Button>
-      <Button title='update bill test' onPress={()=>updateBill('d82c5745-c3cc-4728-9cac-324641c0912f','b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','cost',25,"test","","2024-07-26 01:50:36")}></Button>
+      <Button onPress={()=>deleteBill('c42a5364-5b5f-4276-9b5b-18269f2e80b7')} title = 'delete bill'></Button>
+      <Button title='update bill test' onPress={()=>updateBill('86be3836-ab71-44ff-b7e9-b50768b0ce92','c42a5364-5b5f-4276-9b5b-18269f2e80b7','cost',25,"test","","2024-07-26 01:50:36")}></Button>
   </View>
     </View>
   );
