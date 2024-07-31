@@ -1,6 +1,6 @@
 import {Text, View,Button} from 'react-native'
 import { useEffect} from 'react';
-import { createTable, createAccount, deleteAccountById, deleteAllAccounts, updateAccount, createBill,deleteBill} from './data/database';
+import { createTable, createAccount, deleteAccountById, deleteAllAccounts, updateAccount, createBill,deleteBill,updateBill} from './data/database';
 import AccountTable from './ui/accountTable';
 import BillTable from './ui/billTable';
 
@@ -39,6 +39,7 @@ export default function Index() {
       <Button onPress={()=>deleteAllAccounts()} title = 'delete all accounts'></Button>
       <Button onPress={()=>updateAccount('b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','updated')} title = 'update account'></Button>
       <Button onPress={()=>deleteBill('23c66c78-6a71-418d-a6f7-217538d17596')} title = 'delete bill'></Button>
+      <Button title='update bill test' onPress={()=>updateBill('d82c5745-c3cc-4728-9cac-324641c0912f','b6c870be-7a64-4f2a-b1bb-d7aaafca14cc','transfer',15,"","",'2024-07-31 02:00:00')}></Button>
   </View>
     </View>
   );

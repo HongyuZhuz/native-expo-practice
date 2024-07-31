@@ -6,10 +6,8 @@ let db;
 
 export async function createTable() {
   try {
-    console.log("try to do that")
 
     db = await SQLite.openDatabaseAsync('testDatabase2');
-    console.log(db); 
 
     await db.execAsync(`
       PRAGMA journal_mode = WAL;
@@ -95,8 +93,6 @@ export async function createTable() {
       END; `
     )
 
-    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete_transfer_source')
-    await db.execAsync('DROP TRIGGER IF EXISTS update_balance_delete_transfer_target')
   
     await db.execAsync(
       `CREATE TRIGGER IF NOT EXISTS update_balance_delete_transfer
@@ -224,8 +220,19 @@ export async function deleteBill (bill_id:string){
   db = await SQLite.openDatabaseAsync('testDatabase2');
   try{
     await db.runAsync('DELETE FROM Bill WHERE bill_id = $bill_id', {$bill_id : bill_id})
-    console.log('dlete succeed')
+    console.log('delete succeed')
   }catch(e){
     console.log("delete bill failed" + e)
+  }
+}
+
+export async function updateBill (bill_id:string,account_id:string,type:BillType,amount:number,description:string="",target_account_id:string="",create_at:string){
+  const dataList = [account_id,type,amount,description,target_account_id,create_at,bill_id]
+  try{
+    db = await SQLite.openDatabaseAsync('testDatabase2');
+    await db.runAsync('UPDATE Bill SET account_id =?, type=?, amount = ?,description=?,target_account_id=?, created_at=? WHERE bill_id =?',dataList);
+    console.log('update bill succeed')
+  }catch(e){
+    console.log("update bill failed"+e)
   }
 }
