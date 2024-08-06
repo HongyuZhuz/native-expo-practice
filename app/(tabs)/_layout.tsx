@@ -26,7 +26,7 @@ return(
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="home/index"
+        name="(home)/index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
@@ -39,7 +39,7 @@ return(
         options={{
           title: 'Calendar',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
           ),
         }}
       />
@@ -48,7 +48,7 @@ return(
         options={{
           title: 'Assets',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'wallet' : 'wallet-outline'} color={color} />
           ),
         }}/>
         <Tabs.Screen
@@ -56,7 +56,7 @@ return(
         options={{
           title: 'Reports',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'analytics' : 'analytics-outline'} color={color} />
           ),
         }}/>
         <Tabs.Screen
@@ -64,7 +64,7 @@ return(
         options={{
           title: 'Mine',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'settings' : 'settings-outline'} color={color} />
           ),
         }}/>
     </Tabs>
