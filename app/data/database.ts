@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-native-get-random-values'
+import { Bill } from '@/assets/definition';
 
 let db;
 
@@ -257,5 +258,21 @@ export async function getBillById(bill_id:string){
     }
   }catch(e){
     console.log("find bill by id error:" + e)
+  }
+}
+
+export async function getLatestMonthBill ():Promise<Bill[]|null>{
+  try{
+    db = await SQLite.openDatabaseAsync('testDatabase2');
+    const bills = await db.getAllAsync(`SELECT * FROM Bill WHERE strftime('%Y-%m',created_at) = strftime('%Y-%m', 'now');`)
+    if (bills){
+      return bills as Bill[]
+    }else{
+      console.log("didn't find the bill")
+      return null;
+    }
+  }catch(e){
+    console.log("find bills by latest month error: "+e)
+    return null
   }
 }
