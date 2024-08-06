@@ -235,7 +235,6 @@ export async function updateBill (bill_id:string,account_id:string,type:BillType
     
     await deleteBill(bill_id)
     await createBill(account_id,type,amount,description,target_account_id,bill_id)
-    //can't change timestamp here
 
     await db.runAsync('UPDATE Bill SET created_at= ? WHERE bill_id = ? ',create_at,bill_id)
     

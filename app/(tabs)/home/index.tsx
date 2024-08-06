@@ -1,11 +1,12 @@
 import {Text, View,Button} from 'react-native'
 import { useEffect} from 'react';
-import { createTable, createAccount, deleteAccountById, deleteAllAccounts, updateAccount, createBill,deleteBill,updateBill} from './data/database';
-import AccountTable from './ui/accountTable';
-import BillTable from './ui/billTable';
+import { createTable, createAccount, deleteAccountById, deleteAllAccounts, updateAccount, createBill,deleteBill,updateBill} from '../../data/database';
+import AccountTable from '../../ui/accountTable';
+import BillTable from '../../ui/billTable';
+import { Stack } from 'expo-router';
 
 
-export default function Index() {
+export default function HomePage() {
   useEffect(()=>{
     createTable()
   },[])
@@ -19,6 +20,8 @@ export default function Index() {
         justifyContent:'space-evenly'
       }}
     >
+      <Stack.Screen
+      options={{ headerShown: true, title:'Home'}}></Stack.Screen>
       <View>
       <Text style = {{color:`white`}}>Here is the test</Text>
       <Button onPress={()=>createAccount('test3')} title='createAccount'></Button>
