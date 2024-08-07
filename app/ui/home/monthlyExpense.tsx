@@ -11,7 +11,7 @@ export default function MonthlyExpense ({month,expense,income}:{month:string,exp
             </View>
             <Text style={styles.expense}> <FormattedAmount amount={expense} currency="AUD"/></Text>
             <View style={styles.details}>
-                <Text>Income {income}</Text>
+                <Text>Income <FormattedAmount amount={income} currency="AUD"/></Text>
                 <Text style={{marginLeft:20}}>Balance <FormattedAmount amount={balance} currency="AUD"/></Text>
             </View>
         </View>
