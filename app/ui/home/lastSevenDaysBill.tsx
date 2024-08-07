@@ -5,7 +5,7 @@ export default function LastSevenDayBills () {
     return (
         <View style={styles.container}>
             <View style={styles.firstLine}>
-                <Text style={{color:'white', fontSize:16}}>Last 7 Days Bills</Text>
+                <Text style={{color:'white', fontSize:16, fontWeight:'600'}}>Last 7 Days Bills</Text>
                 <TouchableWithoutFeedback><View style={{flex:1,flexDirection:'row', justifyContent:'flex-end'}}>
                     <Text style={{color:'gray'}}>All Bills </Text> 
                     <Ionicons name="chevron-forward-outline"  size={16} color={'gray'}/>
