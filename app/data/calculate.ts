@@ -1,5 +1,6 @@
 import { Bill } from "@/assets/definition";
 import { getLatestMonthBill } from "./database";
+import { BillIncludeAccountName } from "@/assets/definition";
 
 export async function getLatestMonthTotalExpense():Promise<number> {
     const bills = await getLatestMonthBill();
@@ -31,3 +32,20 @@ function totalIncome (bills:Bill[]){
     const totalIncome = incomeBill.reduce((sum,bill)=>sum+bill.amount,0)
     return totalIncome
 }
+
+export function groupBillsByDate(bills:BillIncludeAccountName[]) {
+    const groupedBills:Record<string,BillIncludeAccountName[]> = {};
+  
+    bills.forEach(bill => {
+      const date = bill.created_at.split(' ')[0]; // 提取日期部分
+      if (!groupedBills[date]) {
+        groupedBills[date] = [];
+      }
+      groupedBills[date].push(bill);
+    });
+  
+    return Object.keys(groupedBills).map(date => ({
+      title: date,
+      data: groupedBills[date]
+    }));
+  }

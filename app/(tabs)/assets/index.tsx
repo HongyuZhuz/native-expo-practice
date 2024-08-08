@@ -1,5 +1,5 @@
 import {Text, View,Button} from 'react-native'
-export default function Mine() {
+export default function AssetsHomePage() {
    
   
     return (

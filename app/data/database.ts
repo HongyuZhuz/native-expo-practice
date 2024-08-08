@@ -276,3 +276,42 @@ export async function getLatestMonthBill ():Promise<Bill[]|null>{
     return null
   }
 }
+
+import { BillIncludeAccountName } from '@/assets/definition';
+export async function getLatestWeekBill ():Promise<BillIncludeAccountName[]|null> {
+  try{
+    db = await SQLite.openDatabaseAsync('testDatabase2')
+    const bills = await db.getAllAsync(
+      `SELECT 
+  Bill.bill_id,
+  Bill.account_id,
+  Account1.account_name AS account_name,
+  Bill.target_account_id,
+  Account2.account_name AS target_account_name,
+  Bill.type,
+  Bill.amount,
+  Bill.description,
+  Bill.created_at
+FROM 
+  Bill
+LEFT JOIN 
+  Account AS Account1 ON Bill.account_id = Account1.account_id
+LEFT JOIN 
+  Account AS Account2 ON Bill.target_account_id = Account2.account_id
+WHERE 
+  Bill.created_at >= datetime('now', '-7 days')
+ORDER BY 
+  Bill.created_at DESC;`
+    )
+
+    if (bills){
+      return bills as BillIncludeAccountName[]
+    }else{
+      console.log("didn't find the bill")
+      return null;
+    }
+  }catch(e){
+    console.log("find bills by latest week error: "+ e)
+    return null
+  }
+}

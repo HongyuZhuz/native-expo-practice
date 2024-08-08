@@ -1,5 +1,9 @@
-import { View, Text, TouchableWithoutFeedback, StyleSheet } from "react-native"
+import { View, Text, TouchableWithoutFeedback, StyleSheet,SectionList } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useState,useEffect } from "react";
+import { getLatestWeekBill } from "@/app/data/database";
+import { BillIncludeAccountName,Section } from "@/assets/definition";
+import { groupBillsByDate } from "@/app/data/calculate";
 
 export default function LastSevenDayBills () {
     return (
@@ -12,7 +16,61 @@ export default function LastSevenDayBills () {
                     </View>
                 </TouchableWithoutFeedback>
             </View>
+            <LastSevenDayBillsSectionList/>
         </View>
+    )
+}
+
+
+function LastSevenDayBillsSectionList() {
+    const [data,setData] = useState<BillIncludeAccountName[]>([])
+    const [section,setSection] = useState<Section[]>([])
+
+    useEffect(()=>{
+        async function fetchExpense() {
+            const LastSevenDayBills = await getLatestWeekBill();
+            if (LastSevenDayBills){
+                setData(LastSevenDayBills)
+            }  
+          }
+        fetchExpense()   
+    },[])
+
+    useEffect(()=>{
+        const sectionData = groupBillsByDate(data)
+        setSection(sectionData);
+    },[data]
+    )
+
+
+    return(
+        <View style={{ flex: 1, padding: 16 }}>
+      <SectionList
+        sections={section}
+        keyExtractor={(item) => item.bill_id}
+        renderItem={({ item }) => (
+          <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+            <Text style={{color:'white'}}>{item.description}</Text>
+            <Text style={{color:'white'}}>{item.amount}{item.account_name}{item.type}</Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={{ backgroundColor: '#f4f4f4', padding: 10 }}>
+            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+          </View>
+        )}
+        ListHeaderComponent={() => (
+          <View style={{ padding: 10 }}>
+            <Text style={{ fontWeight: 'bold' }}>最近七天的账单</Text>
+          </View>
+        )}
+        ListFooterComponent={() => (
+          <View style={{ padding: 10 }}>
+            <Text style={{ fontWeight: 'bold' }}>没有更多账单</Text>
+          </View>
+        )}
+      />
+    </View>
     )
 }
 
