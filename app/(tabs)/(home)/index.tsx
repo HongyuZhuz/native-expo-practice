@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native"
 import { Stack } from "expo-router"
 import MonthlyExpense from "@/app/ui/home/monthlyExpense"
-import LastSevenDayBills from "@/app/ui/home/lastSevenDaysBill"
+import LastSevenDayBillsSectionList from "@/app/ui/home/lastSevenDaysBill"
 import { useEffect,useState } from "react"
 import { getLatestMonthTotalExpense,getLatestMonthTotalIncome } from "@/app/data/calculate"
 import { Test } from "@/app/ui/home/test"
@@ -26,7 +26,7 @@ export default function HomePage() {
       <Stack.Screen
       options={{ headerShown: true, title:'Home'}}></Stack.Screen>
       <MonthlyExpense month={getCurrentMonthAbbreviation()} expense={expense} income={income} currency="AUD"/>
-      <LastSevenDayBills/>
+      <LastSevenDayBillsSectionList/>
       <Test></Test>
     </ScrollView>
   )

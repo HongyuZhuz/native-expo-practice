@@ -5,9 +5,56 @@ import { getLatestWeekBill } from "@/app/data/database";
 import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
 import { groupBillsByDate } from "@/app/data/calculate";
 
-export default function LastSevenDayBills () {
+
+export default function LastSevenDayBillsSectionList() {
+  const [data,setData] = useState<BillIncludeAccountName[]>([])
+  const [section,setSection] = useState<Section[]>([])
+
+  useEffect(()=>{
+      async function fetchExpense() {
+          const LastSevenDayBills = await getLatestWeekBill();
+          if (LastSevenDayBills){
+              setData(LastSevenDayBills)
+          }  
+        }
+      fetchExpense()   
+  },[])
+
+  useEffect(()=>{
+      const sectionData = groupBillsByDate(data)
+      setSection(sectionData);
+  },[data]
+  )
+
+  return(
+    <View style={styles.container}>
+    <SectionList
+      sections={section}
+      keyExtractor={(item) => item.bill_id}
+      renderItem={({ item }) => (
+        <ListItem bill={item}/>
+      )}
+      renderSectionHeader={({section}) => (
+        <SectionHeader section={section}/>
+      )}
+      ListHeaderComponent={() => (
+        <LastSevenDayBillsHeader/>
+      )}
+      ListFooterComponent={() => (
+        <View style={{ padding: 10 }}>
+          <Text style={{ fontWeight: 'bold' }}>没有更多账单</Text>
+        </View>
+      )}
+      scrollEnabled={false}  
+      contentContainerStyle={{ paddingBottom: 20 }} 
+    />
+  </View>
+  )
+}
+
+export function LastSevenDayBillsHeader () {
     return (
-        <View style={styles.container}>
+        <View>
             <View style={styles.firstLine}>
                 <Text style={{color:'white', fontSize:16, fontWeight:'600'}}>Last 7 Days Bills</Text>
                 <TouchableWithoutFeedback><View style={{flex:1,flexDirection:'row', justifyContent:'flex-end'}}>
@@ -16,60 +63,13 @@ export default function LastSevenDayBills () {
                     </View>
                 </TouchableWithoutFeedback>
             </View>
-            <LastSevenDayBillsSectionList/>
+          
         </View>
     )
 }
 
 
-function LastSevenDayBillsSectionList() {
-    const [data,setData] = useState<BillIncludeAccountName[]>([])
-    const [section,setSection] = useState<Section[]>([])
 
-    useEffect(()=>{
-        async function fetchExpense() {
-            const LastSevenDayBills = await getLatestWeekBill();
-            if (LastSevenDayBills){
-                setData(LastSevenDayBills)
-            }  
-          }
-        fetchExpense()   
-    },[])
-
-    useEffect(()=>{
-        const sectionData = groupBillsByDate(data)
-        setSection(sectionData);
-    },[data]
-    )
-
-
-    return(
-        <View style={{ flex: 1, padding: 16 }}>
-      <SectionList
-        sections={section}
-        keyExtractor={(item) => item.bill_id}
-        renderItem={({ item }) => (
-          <ListItem bill={item}/>
-        )}
-        renderSectionHeader={({section}) => (
-          <SectionHeader section={section}/>
-        )}
-        ListHeaderComponent={() => (
-          <View style={{ padding: 10 }}>
-            <Text style={{ fontWeight: 'bold' }}>最近七天的账单</Text>
-          </View>
-        )}
-        ListFooterComponent={() => (
-          <View style={{ padding: 10 }}>
-            <Text style={{ fontWeight: 'bold' }}>没有更多账单</Text>
-          </View>
-        )}
-        scrollEnabled={false}  
-        contentContainerStyle={{ paddingBottom: 20 }} 
-      />
-    </View>
-    )
-}
 
 function ListItem ({bill}:{bill:Bill}) {
   return(
@@ -81,7 +81,7 @@ function ListItem ({bill}:{bill:Bill}) {
 
 function SectionHeader({section}:{section:Section}) {
   return(
-    <View>
+    <View style={styles.sectionHeader}>
       <Text style={{color:'white'}}>{section.title}</Text>
     </View>
   )
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center',
         backgroundColor:'#0e0e0e',
-        paddingHorizontal:20,
         paddingVertical:5,
         borderRadius:10,
         margin:10
@@ -105,6 +104,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         width:'100%',
+        paddingHorizontal:20,
     },
     expense: {
         fontSize: 40,
@@ -115,5 +115,12 @@ const styles = StyleSheet.create({
         alignItems:'flex-end',
         marginBottom:10
       },
+    sectionHeader:{
+      backgroundColor: 'rgba(230, 145, 56, 0.2)',
+      flex:1,
+      flexDirection:'row',
+      paddingHorizontal:20,
+      paddingVertical:5,
+    }
 })
 
