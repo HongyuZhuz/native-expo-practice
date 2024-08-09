@@ -2,7 +2,7 @@ import { View, Text, TouchableWithoutFeedback, StyleSheet,SectionList } from "re
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState,useEffect } from "react";
 import { getLatestWeekBill } from "@/app/data/database";
-import { BillIncludeAccountName,Section } from "@/assets/definition";
+import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
 import { groupBillsByDate } from "@/app/data/calculate";
 
 export default function LastSevenDayBills () {
@@ -49,15 +49,10 @@ function LastSevenDayBillsSectionList() {
         sections={section}
         keyExtractor={(item) => item.bill_id}
         renderItem={({ item }) => (
-          <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-            <Text style={{color:'white'}}>{item.description}</Text>
-            <Text style={{color:'white'}}>{item.amount}{item.account_name}{item.type}</Text>
-          </View>
+          <ListItem bill={item}/>
         )}
-        renderSectionHeader={({ section: { title } }) => (
-          <View style={{ backgroundColor: '#f4f4f4', padding: 10 }}>
-            <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-          </View>
+        renderSectionHeader={({section}) => (
+          <SectionHeader section={section}/>
         )}
         ListHeaderComponent={() => (
           <View style={{ padding: 10 }}>
@@ -69,9 +64,27 @@ function LastSevenDayBillsSectionList() {
             <Text style={{ fontWeight: 'bold' }}>没有更多账单</Text>
           </View>
         )}
+        scrollEnabled={false}  
+        contentContainerStyle={{ paddingBottom: 20 }} 
       />
     </View>
     )
+}
+
+function ListItem ({bill}:{bill:Bill}) {
+  return(
+    <View>
+      <Text style={{color:'white'}}>{bill.amount}</Text>
+    </View>
+  )
+}
+
+function SectionHeader({section}:{section:Section}) {
+  return(
+    <View>
+      <Text style={{color:'white'}}>{section.title}</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
