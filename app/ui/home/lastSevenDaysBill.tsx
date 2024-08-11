@@ -4,8 +4,7 @@ import { useState,useEffect } from "react";
 import { getLatestWeekBill } from "@/app/data/database";
 import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
 import { groupBillsByDate, totalExpense, totalIncome } from "@/app/data/calculate";
-import { FormattedDateParts, IntlProvider} from "react-intl";
-import { FormattedAmount } from "./monthlyExpense";
+import { FormattedAmount,FormatDate } from "@/app/data/format";
 
 
 export default function LastSevenDayBillsSectionList() {
@@ -73,10 +72,10 @@ export function LastSevenDayBillsHeader () {
 
 
 
-function ListItem ({bill}:{bill:Bill}) {
+function ListItem ({bill}:{bill:BillIncludeAccountName}) {
   return(
-    <View>
-      <Text style={{color:'white'}}>{bill.amount}</Text>
+    <View style={{flex:1, flexDirection:'row'}}>
+      <Text style={{color:'white'}}>{bill.created_at + bill.type+bill.amount+bill.account_name}</Text>
     </View>
   )
 }
@@ -85,7 +84,7 @@ function SectionHeader({section}:{section:Section}) {
   const expense =totalExpense(section.data)
   const income = totalIncome(section.data)
   return(
-    <IntlProvider locale='en'>
+    
       <View style={styles.sectionHeader}>
         <View style={{flex:1, flexDirection:'row'}}>
           <View style={styles.verticalLine}/>
@@ -96,29 +95,12 @@ function SectionHeader({section}:{section:Section}) {
           {expense?<Text style={styles.sectionHeaderText}><Text style={{color:'gray'}}> Expense</Text> <FormattedAmount amount={expense} currency={'AUD'}/></Text>:<></>}
         </View>
     </View>
-    </IntlProvider>
+   
     
   )
 }
 
-function FormatDate ({dateString}:{dateString:string}) {
-  const date = new Date(dateString);
-  const now  = new Date();
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate()-1);
 
-  let label = '';
-  if(date.toDateString()===now.toDateString()){
-    label = 'Today';
-  }else if (date.toDateString()===yesterday.toDateString()){
-    label='Yesterday'
-  }
-  return(
-    <Text style={styles.sectionHeaderText}>{label+" "}
-    <FormattedDateParts value={date} month="short" day="numeric" weekday="short">{parts =>(<><Text>{parts[3].value+" "+ parts[5].value+" "+parts[0].value}</Text></>)}</FormattedDateParts>
-    </Text>
-  )
-}
 
 const styles = StyleSheet.create({
     container:{
@@ -137,7 +119,8 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         width:'100%',
-        paddingHorizontal:20,
+        paddingHorizontal:10,
+        marginBottom:10
     },
     expense: {
         fontSize: 40,
@@ -153,7 +136,7 @@ const styles = StyleSheet.create({
       flex:1,
       justifyContent:'space-between',
       flexDirection:'row',
-      paddingHorizontal:20,
+      paddingHorizontal:10,
       paddingVertical:5,
     },
     sectionHeaderText:{

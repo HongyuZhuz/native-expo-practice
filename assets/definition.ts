@@ -19,3 +19,9 @@ export interface Bill {
     account_name:string;
     target_account_name?:string;
   }
+
+  
+export interface Section {
+  title: string;
+  data: BillIncludeAccountName[];
+}

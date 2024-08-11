@@ -1,5 +1,5 @@
 import { StyleSheet, View,Text } from "react-native"
-import { IntlProvider,FormattedNumber } from "react-intl"
+import { FormattedAmount } from "@/app/data/format"
 
 export default function MonthlyExpense ({month,expense,income,currency}:{month:string,expense:number,income:number,currency:string}) {
     const balance = income-expense
@@ -18,21 +18,7 @@ export default function MonthlyExpense ({month,expense,income,currency}:{month:s
     )
 }
 
-export const FormattedAmount = ({amount, currency}:{amount:number,currency:string})=>{
-    return(
-        <IntlProvider locale="en">
-            <Text>
-                <FormattedNumber 
-                    value={amount} 
-                    style="currency"
-                    currency={currency}
-                    minimumFractionDigits={2} 
-                    maximumFractionDigits={2}
-                    />
-            </Text>
-        </IntlProvider>
-    )
-}
+
 
 const styles = StyleSheet.create({
     container:{
