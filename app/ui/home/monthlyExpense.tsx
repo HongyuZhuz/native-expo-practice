@@ -18,7 +18,7 @@ export default function MonthlyExpense ({month,expense,income,currency}:{month:s
     )
 }
 
-const FormattedAmount = ({amount, currency}:{amount:number,currency:string})=>{
+export const FormattedAmount = ({amount, currency}:{amount:number,currency:string})=>{
     return(
         <IntlProvider locale="en">
             <Text>

@@ -3,8 +3,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState,useEffect } from "react";
 import { getLatestWeekBill } from "@/app/data/database";
 import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
-import { groupBillsByDate } from "@/app/data/calculate";
-import { FormattedDate, FormattedDateParts, IntlProvider} from "react-intl";
+import { groupBillsByDate, totalExpense, totalIncome } from "@/app/data/calculate";
+import { FormattedDateParts, IntlProvider} from "react-intl";
+import { FormattedAmount } from "./monthlyExpense";
 
 
 export default function LastSevenDayBillsSectionList() {
@@ -43,7 +44,7 @@ export default function LastSevenDayBillsSectionList() {
       )}
       ListFooterComponent={() => (
         <View style={{ padding: 10 }}>
-          <Text style={{ fontWeight: 'bold' }}>没有更多账单</Text>
+          
         </View>
       )}
       scrollEnabled={false}  
@@ -81,13 +82,19 @@ function ListItem ({bill}:{bill:Bill}) {
 }
 
 function SectionHeader({section}:{section:Section}) {
+  const expense =totalExpense(section.data)
+  const income = totalIncome(section.data)
   return(
     <IntlProvider locale='en'>
       <View style={styles.sectionHeader}>
-        <View style={styles.verticalLine}/>
-        <Text style={{color:'white'}}><FormatDate dateString={section.title}/></Text>
-        
-      
+        <View style={{flex:1, flexDirection:'row'}}>
+          <View style={styles.verticalLine}/>
+          <Text style={{color:'white'}}><FormatDate dateString={section.title}/></Text>
+        </View>
+        <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}>
+          {income?<Text style={styles.sectionHeaderText}><Text style={{color:'gray'}}> Income</Text> <FormattedAmount amount={income} currency={'AUD'}/></Text>:<></>}
+          {expense?<Text style={styles.sectionHeaderText}><Text style={{color:'gray'}}> Expense</Text> <FormattedAmount amount={expense} currency={'AUD'}/></Text>:<></>}
+        </View>
     </View>
     </IntlProvider>
     
@@ -106,9 +113,6 @@ function FormatDate ({dateString}:{dateString:string}) {
   }else if (date.toDateString()===yesterday.toDateString()){
     label='Yesterday'
   }
-
-
-
   return(
     <Text style={styles.sectionHeaderText}>{label+" "}
     <FormattedDateParts value={date} month="short" day="numeric" weekday="short">{parts =>(<><Text>{parts[3].value+" "+ parts[5].value+" "+parts[0].value}</Text></>)}</FormattedDateParts>
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
     sectionHeader:{
       backgroundColor: 'rgba(230, 145, 56, 0.2)',
       flex:1,
+      justifyContent:'space-between',
       flexDirection:'row',
       paddingHorizontal:20,
       paddingVertical:5,

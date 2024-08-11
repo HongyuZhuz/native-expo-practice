@@ -1,6 +1,6 @@
 import { Bill } from "@/assets/definition";
 import { getLatestMonthBill } from "./database";
-import { BillIncludeAccountName } from "@/assets/definition";
+import { BillIncludeAccountName,Section } from "@/assets/definition";
 
 export async function getLatestMonthTotalExpense():Promise<number> {
     const bills = await getLatestMonthBill();
@@ -21,19 +21,19 @@ export async function getLatestMonthTotalIncome():Promise<number> {
 }
 
 
-function totalExpense(bills:Bill[]) {
+export function totalExpense(bills:Bill[]|BillIncludeAccountName[]) {
     const costBills = bills.filter(bill=>bill.type==='cost');
     const totalExpense = costBills.reduce((sum,bill)=>sum+bill.amount,0)
     return totalExpense
 }
 
-function totalIncome (bills:Bill[]){
+export function totalIncome (bills:Bill[]|BillIncludeAccountName[]){
     const incomeBill = bills.filter(bill=>bill.type==='income');
     const totalIncome = incomeBill.reduce((sum,bill)=>sum+bill.amount,0)
     return totalIncome
 }
 
-export function groupBillsByDate(bills:BillIncludeAccountName[]) {
+export function groupBillsByDate(bills:BillIncludeAccountName[]):Section[] {
     const groupedBills:Record<string,BillIncludeAccountName[]> = {};
   
     bills.forEach(bill => {
