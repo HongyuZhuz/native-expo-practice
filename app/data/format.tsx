@@ -1,6 +1,15 @@
 import { IntlProvider,FormattedNumber, FormattedDateParts } from "react-intl"
-import { Text,StyleSheet } from "react-native"
+import { Text,StyleSheet,Image } from "react-native"
 
+const icons = {
+ 
+
+  // 更多图标...
+};
+
+export function Icon({ name }: { name: string }) {
+  return <Image src={require('../../assets/icons/shopping.svg')} alt={name} style={{ width: 24, height: 24, }}/>;
+}
 
 export const FormattedAmount = ({amount, currency}:{amount:number,currency:string})=>{
     return(

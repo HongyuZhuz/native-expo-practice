@@ -74,7 +74,8 @@ export function LastSevenDayBillsHeader () {
 
 function ListItem ({bill}:{bill:BillIncludeAccountName}) {
   return(
-    <View style={{flex:1, flexDirection:'row'}}>
+    <View style={{flex:1, flexDirection:'row',marginVertical:3}}>
+      {bill.icon_name?<Ionicons name={bill.icon_name as any}/>:<Ionicons name="accessibility-outline" color={'white'} style={{fontSize:20}}/>}
       <Text style={{color:'white'}}>{bill.created_at + bill.type+bill.amount+bill.account_name}</Text>
     </View>
   )

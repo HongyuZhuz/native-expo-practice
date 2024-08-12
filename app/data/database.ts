@@ -302,13 +302,21 @@ export async function getLatestWeekBill ():Promise<BillIncludeAccountName[]|null
   Bill.type,
   Bill.amount,
   Bill.description,
-  Bill.created_at
+  Bill.created_at,
+  Bill.category_id,
+  Category.category_name,
+  Category.icon_name,
+  ParentCategory.category_name AS parent_category_name
 FROM 
   Bill
 LEFT JOIN 
   Account AS Account1 ON Bill.account_id = Account1.account_id
 LEFT JOIN 
   Account AS Account2 ON Bill.target_account_id = Account2.account_id
+LEFT JOIN 
+  Category ON Bill.category_id = Category.category_id
+LEFT JOIN 
+  Category AS ParentCategory ON Category.parent_category_id = ParentCategory.category_id
 WHERE 
   Bill.created_at >= datetime('now', '-7 days')
 ORDER BY 
