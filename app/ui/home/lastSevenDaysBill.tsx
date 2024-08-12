@@ -5,6 +5,7 @@ import { getLatestWeekBill } from "@/app/data/database";
 import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
 import { groupBillsByDate, totalExpense, totalIncome } from "@/app/data/calculate";
 import { FormattedAmount,FormatDate } from "@/app/data/format";
+import { Icon } from "@/assets/icons/icon";
 
 
 export default function LastSevenDayBillsSectionList() {
@@ -75,7 +76,7 @@ export function LastSevenDayBillsHeader () {
 function ListItem ({bill}:{bill:BillIncludeAccountName}) {
   return(
     <View style={{flex:1, flexDirection:'row',marginVertical:3}}>
-      {bill.icon_name?<Ionicons name={bill.icon_name as any}/>:<Ionicons name="accessibility-outline" color={'white'} style={{fontSize:20}}/>}
+      {bill.icon_name?<Ionicons name={bill.icon_name as any}/>:<Icon name='sale'/>}
       <Text style={{color:'white'}}>{bill.created_at + bill.type+bill.amount+bill.account_name}</Text>
     </View>
   )
