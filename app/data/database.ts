@@ -4,11 +4,12 @@ import 'react-native-get-random-values'
 import { Bill } from '@/assets/definition';
 
 let db;
+let databaseName = 'testDatabase2'
 
 export async function createTable() {
   try {
 
-    db = await SQLite.openDatabaseAsync('testDatabase2');
+    db = await SQLite.openDatabaseAsync(databaseName);
 
     await db.execAsync(`
       PRAGMA journal_mode = WAL;
@@ -19,18 +20,28 @@ export async function createTable() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE IF NOT EXISTS Bill (
-        bill_id TEXT PRIMARY KEY,
-        account_id TEXT,
-        type TEXT NOT NULL CHECK (type IN ('income', 'cost', 'transfer')),
-        amount REAL NOT NULL,
-        description TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        target_account_id TEXT,
-        FOREIGN KEY (account_id) REFERENCES Account(account_id),
-        FOREIGN KEY (target_account_id) REFERENCES Account(account_id)
-      );
-    `);
+                CREATE TABLE IF NOT EXISTS Bill (
+            bill_id TEXT PRIMARY KEY,
+            account_id TEXT,
+            type TEXT NOT NULL CHECK (type IN ('income', 'cost', 'transfer')),
+            amount REAL NOT NULL,
+            description TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            target_account_id TEXT,
+            category_id TEXT,
+            FOREIGN KEY (account_id) REFERENCES Account(account_id),
+            FOREIGN KEY (target_account_id) REFERENCES Account(account_id),
+            FOREIGN KEY (category_id) REFERENCES Category(category_id)
+          );
+
+                CREATE TABLE IF NOT EXISTS Category (
+                  category_id TEXT PRIMARY KEY,
+                  category_name TEXT NOT NULL,
+                  icon_name TEXT,
+                  parent_category_id TEXT,
+                  FOREIGN KEY (parent_category_id) REFERENCES Category(category_id)
+                );
+              `);
 
 
     await db.execAsync(
@@ -121,7 +132,7 @@ export async function createTable() {
 export async function createAccount (account_name:string){
   const account_id = uuidv4();
   console.log(account_id)
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   const statement = await db.prepareAsync(
     `INSERT INTO Account (account_id,account_name,created_at)  
     VALUES ($account_id,$account_name,CURRENT_TIMESTAMP);
@@ -142,7 +153,7 @@ export async function createAccount (account_name:string){
 }
 
 export async function getAccounts () {
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     const allRows = await db.getAllAsync(`SELECT * FROM Account`)
     return allRows
@@ -152,7 +163,7 @@ export async function getAccounts () {
 }
 
 export async function deleteAccountById (account_id:string) {
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     await db.runAsync(`DELETE FROM account WHERE account_id = $account_id`, {$account_id:account_id})
     console.log ("deleted")
@@ -163,7 +174,7 @@ export async function deleteAccountById (account_id:string) {
 }
 
 export async function deleteAllAccounts () {
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     await db.runAsync(`DELETE FROM account `)
     console.log ("deleted all")
@@ -176,7 +187,7 @@ export async function deleteAllAccounts () {
 }
 
 export async function updateAccount (account_id:string,account_name:string) {
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     await db.runAsync('UPDATE account SET account_name = ?, created_at = CURRENT_TIMESTAMP WHERE account_id = ?',account_name,account_id)
     console.log("updated")
@@ -186,7 +197,7 @@ export async function updateAccount (account_id:string,account_name:string) {
 }
 
 export async function getBills () {
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     const allRows = await db.getAllAsync(`SELECT * FROM Bill`)
     console.log('bills' +allRows)
@@ -204,7 +215,7 @@ export async function createBill (account_id:string,type:BillType,amount:number,
   }
   
 
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   const statement = await db.prepareAsync(
     `INSERT INTO Bill (bill_id,account_id,type,amount,description,created_at,target_account_id)  
     VALUES ($bill_id,$account_id,$type, $amount,$description,CURRENT_TIMESTAMP,$target_account_id);
@@ -221,7 +232,7 @@ export async function createBill (account_id:string,type:BillType,amount:number,
 }
 
 export async function deleteBill (bill_id:string){
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     await db.runAsync('DELETE FROM Bill WHERE bill_id = $bill_id', {$bill_id : bill_id})
     console.log('delete succeed')
@@ -231,7 +242,7 @@ export async function deleteBill (bill_id:string){
 }
 
 export async function updateBill (bill_id:string,account_id:string,type:BillType,amount:number,description:string="",target_account_id:string="",create_at:string){
-  db = await SQLite.openDatabaseAsync('testDatabase2');
+  db = await SQLite.openDatabaseAsync(databaseName);
   try{
     
     await deleteBill(bill_id)
@@ -248,7 +259,7 @@ export async function updateBill (bill_id:string,account_id:string,type:BillType
 
 export async function getBillById(bill_id:string){
   try{
-    db = await SQLite.openDatabaseAsync('testDatabase2');
+    db = await SQLite.openDatabaseAsync(databaseName);
     const bill = await db.getFirstAsync(`SELECT * FROM Bill WHERE bill_id =?`,bill_id)
     if (bill){
       return bill
@@ -263,7 +274,7 @@ export async function getBillById(bill_id:string){
 
 export async function getLatestMonthBill ():Promise<Bill[]|null>{
   try{
-    db = await SQLite.openDatabaseAsync('testDatabase2');
+    db = await SQLite.openDatabaseAsync(databaseName);
     const bills = await db.getAllAsync(`SELECT * FROM Bill WHERE strftime('%Y-%m',created_at) = strftime('%Y-%m', 'now');`)
     if (bills){
       return bills as Bill[]
@@ -280,7 +291,7 @@ export async function getLatestMonthBill ():Promise<Bill[]|null>{
 import { BillIncludeAccountName } from '@/assets/definition';
 export async function getLatestWeekBill ():Promise<BillIncludeAccountName[]|null> {
   try{
-    db = await SQLite.openDatabaseAsync('testDatabase2')
+    db = await SQLite.openDatabaseAsync(databaseName)
     const bills = await db.getAllAsync(
       `SELECT 
   Bill.bill_id,
