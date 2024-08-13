@@ -74,12 +74,78 @@ export function LastSevenDayBillsHeader () {
 
 
 function ListItem ({bill}:{bill:BillIncludeAccountName}) {
+
+  let content=<Text></Text>
+  if(bill.type ==='cost'){
+    content = <View style={listDetailStyles.rightPart}>
+                  <Text style={listDetailStyles.amount}>{"-"}
+                      <FormattedAmount amount = {bill.amount} currency="AUD"/>
+                  </Text>
+                  <Text style={listDetailStyles.accountName}>{bill.account_name}</Text></View>
+  }else if (bill.type==='income'){
+    content = <View style={listDetailStyles.rightPart}>
+                  <Text style={listDetailStyles.amount}>{"+"}
+                      <FormattedAmount amount = {bill.amount} currency="AUD"/>
+                  </Text>
+                  <Text style={listDetailStyles.accountName}>{bill.account_name}</Text></View>
+    
+  }else if (bill.type==='transfer'){
+    content = <View style={listDetailStyles.rightPart}>
+                  <Text style={listDetailStyles.amount}>
+                      <FormattedAmount amount = {bill.amount} currency="AUD"/>
+                  </Text>
+              </View>
+  }
+
+
   return(
-    <View style={{flex:1, flexDirection:'row',marginVertical:3}}>
-      {bill.icon_name?<Ionicons name={bill.icon_name as any}/>:<Icon name='sale'/>}
-      <Text style={{color:'white'}}>{bill.created_at + bill.type+bill.amount+bill.account_name}</Text>
+    <View>
+    <View style={listDetailStyles.mainView}>
+    {bill.type==='transfer'?
+    <View style={listDetailStyles.leftPart}>
+      <View  style={listDetailStyles.iconView}>
+        <Icon name = 'transfer'/>
+      </View>
+      <View style={listDetailStyles.categoryView}>
+          <Text style={listDetailStyles.category}>{bill.account_name+" -> "+bill.target_account_name}</Text>
+          <Text style={listDetailStyles.time}>{formatTime(bill.created_at)}</Text>
+      </View>
+
+    </View>:
+    <View style={listDetailStyles.leftPart}>
+        <View style={listDetailStyles.iconView}>
+        {bill.icon_name?<Icon name={bill.icon_name}/>:<Icon name='shopping'/>}
+        </View>
+        <View style={listDetailStyles.categoryView}>
+          {bill.category_name?(bill.parent_category_name?<Text style={listDetailStyles.category}>{bill.parent_category_name+"."+bill.category_name}</Text>:<Text style={listDetailStyles.category}>{bill.category_name}</Text>):<Text style={listDetailStyles.category}>Undefined</Text>}
+          <Text style={listDetailStyles.time}>{formatTime(bill.created_at)}</Text>
+        </View>
+      </View>
+    }
+      
+      {content}
+    </View>
+    <View style={listDetailStyles.divider}/>
     </View>
   )
+}
+function formatTime(dateString: string): string {
+  const date = new Date(dateString);
+  
+  // 获取小时和分钟
+  let hours = date.getHours().toString();
+  let minutes = date.getMinutes().toString();
+  
+  // 如果小时或分钟小于10，补充前导0
+  if (hours.length < 2) {
+      hours = '0' + hours;
+  }
+  if (minutes.length < 2) {
+      minutes = '0' + minutes;
+  }
+  
+  // 返回格式化的时间
+  return `${hours}:${minutes}`;
 }
 
 function SectionHeader({section}:{section:Section}) {
@@ -103,6 +169,65 @@ function SectionHeader({section}:{section:Section}) {
 }
 
 
+
+const listDetailStyles = StyleSheet.create({
+  mainView:{
+    flex:1, 
+    flexDirection:'row',
+    marginVertical:6,
+    justifyContent:'space-between',
+    paddingHorizontal:5
+  },
+  divider:{
+    borderColor:'gray',
+    borderBottomWidth:0.25,
+    marginHorizontal:15,
+    padding:1,
+    opacity: 0.3,
+  },
+
+  leftPart:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:"flex-start",
+    alignItems:'center',
+  },
+  rightPart:{
+    flex:0,
+    flexDirection:'column',
+    alignItems:'flex-end',
+    justifyContent:'center'
+  },
+  category:{
+    color:'white',
+    fontSize:13
+  },
+  iconView:{
+    flex:0,
+    justifyContent:'center',
+    alignItems:'center',
+    padding:6,
+
+  },
+  categoryView:{
+    flex:1,
+    flexDirection:'column',
+
+  },
+  time:{
+    color:'gray',
+    fontSize:10,
+  },
+  amount:{
+    color:'white',
+    fontWeight:'600',
+    fontSize:13
+  },
+  accountName:{
+    color:'gray',
+    fontSize:10,
+  }
+})
 
 const styles = StyleSheet.create({
     container:{

@@ -25,7 +25,7 @@ export function Test () {
         <Button onPress={()=>createAccount('test3')} title='createAccount'></Button>
         </View>
         <View>
-          <Button onPress={()=>createBill('c42a5364-5b5f-4276-9b5b-18269f2e80b7','cost',5,'','')} title = 'Create Bill'></Button>
+          <Button onPress={()=>createBill('c42a5364-5b5f-4276-9b5b-18269f2e80b7','income',5,'','')} title = 'Create Bill'></Button>
         </View>
         
         <View style={{alignItems:'center'}}>
