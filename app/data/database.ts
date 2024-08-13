@@ -289,6 +289,7 @@ export async function getLatestMonthBill ():Promise<Bill[]|null>{
 }
 
 import { BillIncludeAccountName } from '@/assets/definition';
+import { changeBillsToLocalTime } from './format';
 export async function getLatestWeekBill ():Promise<BillIncludeAccountName[]|null> {
   try{
     db = await SQLite.openDatabaseAsync(databaseName)
@@ -324,7 +325,8 @@ ORDER BY
     )
 
     if (bills){
-      return bills as BillIncludeAccountName[]
+      const newBills = changeBillsToLocalTime(bills as BillIncludeAccountName[])
+      return newBills
     }else{
       console.log("didn't find the bill")
       return null;

@@ -4,7 +4,7 @@ import { useState,useEffect } from "react";
 import { getLatestWeekBill } from "@/app/data/database";
 import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
 import { groupBillsByDate, totalExpense, totalIncome } from "@/app/data/calculate";
-import { FormattedAmount,FormatDate } from "@/app/data/format";
+import { FormattedAmount,FormatDate, formatTime } from "@/app/data/format";
 import { Icon } from "@/assets/icons/icon";
 
 
@@ -129,24 +129,7 @@ function ListItem ({bill}:{bill:BillIncludeAccountName}) {
     </View>
   )
 }
-function formatTime(dateString: string): string {
-  const date = new Date(dateString);
-  
-  // 获取小时和分钟
-  let hours = date.getHours().toString();
-  let minutes = date.getMinutes().toString();
-  
-  // 如果小时或分钟小于10，补充前导0
-  if (hours.length < 2) {
-      hours = '0' + hours;
-  }
-  if (minutes.length < 2) {
-      minutes = '0' + minutes;
-  }
-  
-  // 返回格式化的时间
-  return `${hours}:${minutes}`;
-}
+
 
 function SectionHeader({section}:{section:Section}) {
   const expense =totalExpense(section.data)
