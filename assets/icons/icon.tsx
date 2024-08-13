@@ -3,10 +3,14 @@
 import Shopping from './shopping.svg'
 import { SvgProps } from 'react-native-svg';
 import Sale from './sale.svg'
+import Transfer from './transfer.svg'
+import Undefined from './undefined.svg'
 
 const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     shopping: Shopping,
     sale:Sale,
+    transfer:Transfer,
+    undefined:Undefined,
   };
 
 

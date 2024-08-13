@@ -94,7 +94,7 @@ function ListItem ({bill}:{bill:BillIncludeAccountName}) {
     </View>:
     <View style={listDetailStyles.leftPart}>
         <View style={listDetailStyles.iconView}>
-        {bill.icon_name?<Icon name={bill.icon_name}/>:<Icon name='shopping'/>}
+        {bill.icon_name?<Icon name={bill.icon_name}/>:<Icon name='undefined'/>}
         </View>
         <View style={listDetailStyles.categoryView}>
           {bill.category_name?(bill.parent_category_name?<Text style={listDetailStyles.category}>{bill.parent_category_name+"."+bill.category_name}</Text>:<Text style={listDetailStyles.category}>{bill.category_name}</Text>):<Text style={listDetailStyles.category}>Undefined</Text>}
