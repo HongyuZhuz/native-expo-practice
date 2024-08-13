@@ -1,32 +1,12 @@
 import { View, Text, TouchableWithoutFeedback, StyleSheet,SectionList } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useState,useEffect } from "react";
-import { getLatestWeekBill } from "@/app/data/database";
-import { Bill, BillIncludeAccountName,Section } from "@/assets/definition";
-import { groupBillsByDate, totalExpense, totalIncome } from "@/app/data/calculate";
+import { BillIncludeAccountName,Section } from "@/assets/definition";
+import { totalExpense, totalIncome } from "@/app/data/calculate";
 import { FormattedAmount,FormatDate, formatTime } from "@/app/data/format";
 import { Icon } from "@/assets/icons/icon";
 
 
-export default function LastSevenDayBillsSectionList() {
-  const [data,setData] = useState<BillIncludeAccountName[]>([])
-  const [section,setSection] = useState<Section[]>([])
-
-  useEffect(()=>{
-      async function fetchExpense() {
-          const LastSevenDayBills = await getLatestWeekBill();
-          if (LastSevenDayBills){
-              setData(LastSevenDayBills)
-          }  
-        }
-      fetchExpense()   
-  },[])
-
-  useEffect(()=>{
-      const sectionData = groupBillsByDate(data)
-      setSection(sectionData);
-  },[data]
-  )
+export default function LastSevenDayBillsSectionList({section}:{section:Section[]}) {
 
   return(
     <View style={styles.container}>
