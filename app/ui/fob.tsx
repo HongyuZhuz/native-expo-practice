@@ -6,29 +6,32 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export default function Fob () {
-    const [modalVisible, setModalVisible] = useState(false);
-  const slideUp = new Animated.Value(300); // 初始位置在屏幕外
-
-    const toggleModal = () => {
-        setModalVisible(!modalVisible);
-        if (!modalVisible) {
-          Animated.spring(slideUp, {
-            toValue: 0, // 移动到屏幕内
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.spring(slideUp, {
-            toValue: 300, // 移动到屏幕外
-            useNativeDriver: true,
-          }).start(() => setModalVisible(false));
-        }
-      };
+export default function Fob ({toggleModal}:{toggleModal:()=>void}) {
+    
+   
     return(
-        
         <TouchableOpacity style={styles.fab} activeOpacity={1} onPress={toggleModal}>
             <AntDesign name="plus" size={24} color="white" />
         </TouchableOpacity>
+    )
+}
+export function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
+    const slideUp = new Animated.Value(300); // 初始位置在屏幕外
+    return(
+        <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="none"
+      >
+        <View style={styles.modalContainer}>
+          <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideUp }] }]}>
+            <Text style={styles.modalText}>This is the popup content!</Text>
+            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Modal>
     )
 }
 
@@ -51,32 +54,36 @@ const styles = StyleSheet.create({
       elevation: 5,
       zIndex: 9999,
     },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-      width: '100%',
-      height: 300,
-      backgroundColor: 'white',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      padding: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
+    
+    
     modalText: {
       fontSize: 18,
-      marginBottom: 20,
+      color: 'black', // 将字体颜色设置为黑色以与白色背景对比
+    backgroundColor: 'red', // 测试背景色，查看文本是否被渲染
+
     },
-    closeButton: {
-      backgroundColor: 'yellow',
-      padding: 10,
-      borderRadius: 10,
-    },
+
     closeButtonText: {
       fontSize: 16,
     },
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      modalContent: {
+        width: 300,
+        height: 200,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      closeButton: {
+        backgroundColor: 'yellow',
+        padding: 10,
+        borderRadius: 10,
+        marginTop: 20,
+      },
   });
