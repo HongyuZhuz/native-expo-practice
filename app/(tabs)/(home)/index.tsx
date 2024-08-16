@@ -1,4 +1,4 @@
-import { ScrollView,RefreshControl } from "react-native"
+import { ScrollView,RefreshControl,View } from "react-native"
 import { Stack } from "expo-router"
 import MonthlyExpense from "@/app/ui/home/monthlyExpense"
 import LastSevenDayBillsSectionList from "@/app/ui/home/lastSevenDaysBill"
@@ -7,6 +7,7 @@ import { getLatestMonthTotalExpense,getLatestMonthTotalIncome,groupBillsByDate }
 import { Test } from "@/app/ui/home/test"
 import { BillIncludeAccountName,Section } from "@/assets/definition"
 import { getLatestWeekBill } from "@/app/data/database"
+import Fob from "@/app/ui/fob"
 
 
 export default function HomePage() {
@@ -50,17 +51,22 @@ export default function HomePage() {
     setRefreshing(false); // 结束刷新
   };
   return (
-    <ScrollView
+    <View>
+      <Fob/>
+      <ScrollView
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
     }
     >
+      
       <Stack.Screen
       options={{ headerShown: true, title:'Home'}}></Stack.Screen>
       <MonthlyExpense month={getCurrentMonthAbbreviation()} expense={expense} income={income} currency="AUD"/>
       <LastSevenDayBillsSectionList section={section}/>
       <Test></Test>
     </ScrollView>
+    </View>
+    
   )
 }
 
