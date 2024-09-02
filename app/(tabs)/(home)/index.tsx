@@ -1,4 +1,4 @@
-import { ScrollView,RefreshControl,View,Animated } from "react-native"
+import { ScrollView,RefreshControl,View} from "react-native"
 import { Stack } from "expo-router"
 import MonthlyExpense from "@/app/ui/home/monthlyExpense"
 import LastSevenDayBillsSectionList from "@/app/ui/home/lastSevenDaysBill"
@@ -7,7 +7,7 @@ import { getLatestMonthTotalExpense,getLatestMonthTotalIncome,groupBillsByDate }
 import { Test } from "@/app/ui/home/test"
 import { BillIncludeAccountName,Section } from "@/assets/definition"
 import { getLatestWeekBill } from "@/app/data/database"
-import Fob, { CreateBill } from "@/app/ui/fob"
+import Fob from "@/app/ui/fob"
 
 
 export default function HomePage() {
@@ -17,23 +17,6 @@ export default function HomePage() {
   const [section, setSection] = useState<Section[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const slideUp = new Animated.Value(300); // 初始位置在屏幕外
-
-    const toggleModal = () => {
-        setModalVisible(!modalVisible);
-        if (!modalVisible) {
-          Animated.spring(slideUp, {
-            toValue: 0, // 移动到屏幕内
-            useNativeDriver: true,
-          }).start();
-        } else {
-          Animated.spring(slideUp, {
-            toValue: 300, // 移动到屏幕外
-            useNativeDriver: true,
-          }).start(() => setModalVisible(false));
-        }
-      };
 
   // 统一获取数据的函数
   async function fetchData() {
@@ -70,8 +53,7 @@ export default function HomePage() {
   };
   return (
     <View>
-      <Fob toggleModal={toggleModal}/>
-      <CreateBill modalVisible={modalVisible} toggleModal={toggleModal}/>
+      <Fob/>
       <ScrollView
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

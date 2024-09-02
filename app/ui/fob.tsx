@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Modal, Animated } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import { useState } from 'react';
 
-const Tab = createBottomTabNavigator();
 
-export default function Fob ({toggleModal}:{toggleModal:()=>void}) {
-    
-   
+export default function Fob () {
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
     return(
         <TouchableOpacity style={styles.fab} activeOpacity={1} onPress={toggleModal}>
             <AntDesign name="plus" size={24} color="white" />
+            <CreateBill modalVisible={modalVisible} toggleModal={toggleModal}/>
         </TouchableOpacity>
+        
     )
 }
-export function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
+function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
     const slideUp = new Animated.Value(300); // 初始位置在屏幕外
     return(
         <Modal
         transparent={true}
         visible={modalVisible}
-        animationType="none"
+        animationType="slide"
       >
         <View style={styles.modalContainer}>
           <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideUp }] }]}>
@@ -69,9 +71,7 @@ const styles = StyleSheet.create({
 
     modalContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'black'
       },
       modalContent: {
         width: 300,
