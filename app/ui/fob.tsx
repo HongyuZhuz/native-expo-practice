@@ -22,6 +22,7 @@ export default function Fob () {
 
 function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
   const [amount, setAmount] = useState("0.00");
+  const [activeTab, setActiveTab ] = useState('Expense');
 
   return (
       <Modal
@@ -31,7 +32,12 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
       >
           <View style={styles.modalContainer}>
               {/* Header */}
-              <Header toggleModal={toggleModal}/>
+              <Header toggleModal={toggleModal} activeTab = {activeTab} setActiveTab = {setActiveTab}/>
+              <View>
+                {activeTab==='Expense' && <ExpenseScreen />}
+                {activeTab==='Income' && <IncomeScreen/>}
+                {activeTab==='Transfer' &&<TransferScreen/>}
+              </View>
 
               {/* Category Icons */}
               <ScrollView contentContainerStyle={styles.categoryContainer}>
@@ -91,27 +97,54 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
 }
 
 
-function Header ({toggleModal}:{toggleModal:()=>void}) {
+function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, activeTab:any, setActiveTab:any}) {
 
-
-
-  
   return (   
               <View style={styles.header}>
                   <TouchableOpacity onPress={toggleModal}>
                       <AntDesign name="left" size={24} color="white" />
                   </TouchableOpacity>
-                  <View style={styles.tabContainer}>
-                      <Text style={styles.tabText}>Expense</Text>
-                      <Text style={styles.tabText}>Income</Text>
-                      <Text style={styles.tabText}>Transfer</Text>
-                  </View>
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity onPress={() => setActiveTab('Expense')}>
+                        <Text style={[styles.tabText, activeTab === 'Expense' && styles.activeTabText]}>Expense</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setActiveTab('Income')}>
+                        <Text style={[styles.tabText, activeTab === 'Income' && styles.activeTabText]}>Income</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setActiveTab('Transfer')}>
+                        <Text style={[styles.tabText, activeTab === 'Transfer' && styles.activeTabText]}>Transfer</Text>
+                    </TouchableOpacity>
+                </View>
                   <TouchableOpacity>
                       <AntDesign name="setting" size={24} color="white" />
                   </TouchableOpacity>
               </View>
   )
 }
+
+function ExpenseScreen() {
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.categoryText}>Expense</Text>
+      </View>
+    );
+  }
+  
+  function IncomeScreen() {
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.categoryText}>Income</Text>
+      </View>
+    );
+  }
+  
+  function TransferScreen() {
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.categoryText}>Transfer</Text>
+      </View>
+    );
+  }
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -212,5 +245,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
     zIndex: 9999,
+  },
+  screenContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activeTabText: {
+    fontWeight: 'bold',
+    color: 'orange',
   },
 });
