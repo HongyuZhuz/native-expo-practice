@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   },
   activeIcon:{
     backgroundColor:'rgba(255,165,0,0.5)',
-    borderRadius:'50%',
+    borderRadius:50,
     padding:2
   },
   activeText:{
