@@ -161,10 +161,13 @@ function ExpenseScreen({category,setCategory}:{category:string,setCategory:any})
         <View style={styles.iconContainer}>
           {expenseKeys.map((name)=>{
             return(
-              <View style = {[styles.iconGroup,category===name&&styles.activeIcon]}>
+              <View style = {styles.iconGroup}>
                 <TouchableOpacity onPress={() => handleIconPress(name)} style={styles.iconGroup}>
-                  <Icon key={name} name = {name} style={styles.icon}/>
-                  <Text style={styles.categoryText}>{name}</Text>
+                  <View style = {category===name&& styles.activeIcon}>
+                    <Icon key={name} name = {name} style={styles.icon}/>
+                  </View>
+                  
+                  <Text style={[styles.categoryText,category===name&& styles.activeText]}>{name}</Text>
                 </TouchableOpacity>
                 
             </View>
@@ -330,6 +333,11 @@ const styles = StyleSheet.create({
     height:30
   },
   activeIcon:{
-    backgroundColor:'orange'
+    backgroundColor:'rgba(255,165,0,0.5)',
+    borderRadius:'50%',
+    padding:2
+  },
+  activeText:{
+    color:'orange'
   }
 });
