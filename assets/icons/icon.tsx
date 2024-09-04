@@ -48,7 +48,7 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     }
   }
 
-  export function Icon({ name,style }: { name: string, style:any }) {
+  export function Icon({ name,style }: { name: string, style?:any }) {
     // 根据 `name` 动态选择组件
     const SvgComponent = iconMap[name];
   
@@ -58,5 +58,5 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     }
   
     // 渲染选择的组件
-    return <SvgComponent width={style.width} height={style.height} />;
+    return <SvgComponent width={style?style.width:24} height={style?style.height:24} />;
   }

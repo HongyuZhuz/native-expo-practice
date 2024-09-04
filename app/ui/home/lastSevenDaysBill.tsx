@@ -189,7 +189,8 @@ const listDetailStyles = StyleSheet.create({
   accountName:{
     color:'gray',
     fontSize:10,
-  }
+  },
+  
 })
 
 const styles = StyleSheet.create({
