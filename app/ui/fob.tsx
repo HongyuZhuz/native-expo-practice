@@ -23,6 +23,10 @@ export default function Fob () {
 function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
   const [amount, setAmount] = useState("0.00");
   const [activeTab, setActiveTab ] = useState('Expense');
+  const [category,setCategory] = useState('undefine')
+
+
+
 
   return (
       <Modal
@@ -36,7 +40,7 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
 
               {/*Icon sets*/}
               <View>
-                {activeTab==='Expense' && <ExpenseScreen />}
+                {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory}/>}
                 {activeTab==='Income' && <IncomeScreen/>}
                 {activeTab==='Transfer' &&<TransferScreen/>}
               </View>
@@ -147,16 +151,22 @@ function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, act
 
 import { iconLib,Icon } from '@/assets/icons/icon';
 
-function ExpenseScreen() {
+function ExpenseScreen({category,setCategory}:{category:string,setCategory:any}) {
   const expenseKeys = Object.keys(iconLib.expense);
+ const handleIconPress = (name:string) =>{
+  setCategory(name)
+ }
     return (
       <View style={styles.screenContainer}>
         <View style={styles.iconContainer}>
           {expenseKeys.map((name)=>{
             return(
-              <View style = {styles.iconGroup}>
-                <Icon key={name} name = {name} style={styles.icon}/>
-                <Text style={styles.categoryText}>{name}</Text>
+              <View style = {[styles.iconGroup,category===name&&styles.activeIcon]}>
+                <TouchableOpacity onPress={() => handleIconPress(name)} style={styles.iconGroup}>
+                  <Icon key={name} name = {name} style={styles.icon}/>
+                  <Text style={styles.categoryText}>{name}</Text>
+                </TouchableOpacity>
+                
             </View>
             )})}
         </View>
@@ -318,5 +328,8 @@ const styles = StyleSheet.create({
   icon:{
     width:30,
     height:30
+  },
+  activeIcon:{
+    backgroundColor:'orange'
   }
 });
