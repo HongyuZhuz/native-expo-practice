@@ -145,10 +145,21 @@ function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, act
   )
 }
 
+import { iconLib,Icon } from '@/assets/icons/icon';
+
 function ExpenseScreen() {
+  const expenseKeys = Object.keys(iconLib.expense);
     return (
       <View style={styles.screenContainer}>
-        <Text style={styles.categoryText}>Expense</Text>
+        <View style={styles.iconContainer}>
+          {expenseKeys.map((name)=>{
+            return(
+              <View style = {styles.iconGroup}>
+                <Icon key={name} name = {name} style={styles.icon}/>
+                <Text style={styles.categoryText}>{name}</Text>
+            </View>
+            )})}
+        </View>
       </View>
     );
   }
@@ -210,6 +221,8 @@ const styles = StyleSheet.create({
   categoryText: {
       color: 'white',
       marginTop: 5,
+      fontSize:12,
+      textAlign:'center'
   },
   amountContainer: {
       flexDirection: 'row',
@@ -278,6 +291,7 @@ const styles = StyleSheet.create({
   screenContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    height:'40%'
   },
   activeTabText: {
     color: 'white',
@@ -288,7 +302,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: '90%',
     backgroundColor: 'black',
-    borderRadius: 10,
+    borderRadius: 8,
     marginHorizontal:2,
   },
+  iconContainer:{
+    flex:1,
+    flexDirection:'row',
+    flexWrap:'wrap'
+  },
+  iconGroup:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  icon:{
+    width:30,
+    height:30
+  }
 });

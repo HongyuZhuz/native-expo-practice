@@ -13,6 +13,8 @@ import Car from './car.svg'
 import Dining from './dining.svg'
 import Groceries from './groceries.svg'
 import Petrol from './petrol.svg'
+import Snacks from './snacks.svg'
+import Transport from './transport.svg'
 
 
 
@@ -30,21 +32,23 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     drink:Drink,
     groceries:Groceries,
     lunch:Lunch,
-    petrol:Petrol
+    petrol:Petrol,
+    snacks:Snacks,
+    transport:Transport
 
   };
 
-  const iconLib:{[key:string]:{[key:string]:string[]}} = {
+  export const iconLib:{[key:string]:{[key:string]:string[]}} = {
     expense:{
       groceries:[],
-      dinning:["breakfast","lunch","dinner","drink"],
+      dining:["breakfast","lunch","dinner","drink"],
       snacks:[],
       transport:["petrol","car"],
       shopping:["camera"]
     }
   }
 
-  export function Icon({ name }: { name: string }) {
+  export function Icon({ name,style }: { name: string, style:any }) {
     // 根据 `name` 动态选择组件
     const SvgComponent = iconMap[name];
   
@@ -54,5 +58,5 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     }
   
     // 渲染选择的组件
-    return <SvgComponent width={24} height={24} />;
+    return <SvgComponent width={style.width} height={style.height} />;
   }
