@@ -39,11 +39,11 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
               <Header toggleModal={toggleModal} activeTab = {activeTab} setActiveTab = {setActiveTab}/>
 
               {/*Icon sets*/}
-              <View>
+              
                 {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory}/>}
                 {activeTab==='Income' && <IncomeScreen/>}
                 {activeTab==='Transfer' &&<TransferScreen/>}
-              </View>
+              
 
 
               {/* Calculator component*/}
@@ -161,13 +161,13 @@ function ExpenseScreen({category,setCategory}:{category:string,setCategory:any})
         <View style={styles.iconContainer}>
           {expenseKeys.map((name)=>{
             return(
-              <View style = {styles.iconGroup}>
+              <View  key={name} style = {styles.iconGroup}>
                 <TouchableOpacity onPress={() => handleIconPress(name)} style={styles.iconGroup}>
-                  <View style = {category===name&& styles.activeIcon}>
-                    <Icon key={name} name = {name} style={styles.icon}/>
-                  </View>
-                  
+                  <View style = {[styles.iconWrapper, category === name && styles.activeIcon]}>
+                    <Icon name = {name} style={styles.icon}/>
+                    </View>
                   <Text style={[styles.categoryText,category===name&& styles.activeText]}>{name}</Text>
+                  
                 </TouchableOpacity>
                 
             </View>
@@ -302,9 +302,11 @@ const styles = StyleSheet.create({
     zIndex: 9999,
   },
   screenContainer: {
+    flex:0,
     justifyContent: 'center',
     alignItems: 'center',
-    height:'40%'
+    height:'40%',
+    
   },
   activeTabText: {
     color: 'white',
@@ -321,12 +323,15 @@ const styles = StyleSheet.create({
   iconContainer:{
     flex:1,
     flexDirection:'row',
-    flexWrap:'wrap'
+    flexWrap:'wrap',
+    justifyContent:'center',
+    alignItems:'center',
   },
   iconGroup:{
     flex:1,
-    justifyContent:'center',
+    width:100,
     alignItems:'center',
+    marginTop:20
   },
   icon:{
     width:30,
@@ -335,7 +340,9 @@ const styles = StyleSheet.create({
   activeIcon:{
     backgroundColor:'rgba(255,165,0,0.5)',
     borderRadius:50,
-    padding:2
+  },
+  iconWrapper:{
+    padding:3
   },
   activeText:{
     color:'orange'
