@@ -15,6 +15,8 @@ import Groceries from './groceries.svg'
 import Petrol from './petrol.svg'
 import Snacks from './snacks.svg'
 import Transport from './transport.svg'
+import Feather from '@expo/vector-icons/Feather';
+import { View } from 'react-native';
 
 
 
@@ -48,7 +50,7 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     }
   }
 
-  export function Icon({ name,style }: { name: string, style?:any }) {
+  export function Icon({ name,style,more }: { name: string, style?:any,more?:boolean }) {
     // 根据 `name` 动态选择组件
     const SvgComponent = iconMap[name];
   
@@ -56,7 +58,20 @@ const iconMap: { [key: string]:  React.FC<SvgProps> } = {
     if (!SvgComponent) {
       return null;
     }
+    console.log(more)
   
     // 渲染选择的组件
-    return <SvgComponent width={style?style.width:24} height={style?style.height:24} />;
+    return <View><SvgComponent width={style?style.width:24} height={style?style.height:24} ></SvgComponent>
+    {more===true?<View
+          style={{
+            position: 'absolute',
+            right: -6,
+            bottom: -7,
+            backgroundColor: 'gray',
+            padding: 1,  // 给 View 适当的 padding
+            borderRadius: 20,  // 让容器变成圆形
+          }}
+        >
+          <Feather name="more-horizontal" size={10} color="white" />
+        </View>:<></>}</View>;
   }
