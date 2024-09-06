@@ -26,8 +26,6 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
   const [category,setCategory] = useState('undefine')
 
 
-
-
   return (
       <Modal
           transparent={false}
@@ -150,29 +148,64 @@ function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, act
 }
 
 import { iconLib,Icon } from '@/assets/icons/icon';
+import { Pressable,Dimensions } from 'react-native';
 
 function ExpenseScreen({category,setCategory}:{category:string,setCategory:any}) {
   const expenseKeys = Object.keys(iconLib.expense);
- const handleIconPress = (name:string) =>{
-  setCategory(name)
- }
+  const [expandedIcon, setExpandedIcon] = useState<string | null>(null);  // 用于保存当前展开的图标
+  const [iconPosition, setIconPosition] = useState<{ x: number, y: number } | null>(null);  // 保存图标位置
+  
+  const handleIconPress = (name: string, event: any) => {
+    // 获取点击图标的屏幕坐标
+    const { pageX, pageY } = event.nativeEvent;
+    if (iconLib.expense[name] && iconLib.expense[name].length > 0) {
+      setExpandedIcon(name);
+      setCategory(name);
+      setIconPosition({ x: pageX, y: pageY });  // 设置图标的坐标位置
+    } else {
+      setCategory(name);
+      setExpandedIcon(null);
+    }
+  };
+
+  const closeOverlay = () => {
+    setExpandedIcon(null);  // 关闭弹出窗口
+  };
     return (
       <View style={styles.screenContainer}>
         <View style={styles.iconContainer}>
           {expenseKeys.map((name)=>{
             return(
               <View  key={name} style = {styles.iconGroup}>
-                <TouchableOpacity onPress={() => handleIconPress(name)} style={styles.iconGroup}>
+                <TouchableOpacity onPress={(event) => handleIconPress(name,event)} style={styles.iconGroup}>
                   <View style = {[styles.iconWrapper, category === name && styles.activeIcon]}>
-                    <Icon name = {name} style={styles.icon}/>
+                  <Icon name={name} style={styles.icon} more={iconLib.expense[name] && iconLib.expense[name].length > 0} />
                     </View>
                   <Text style={[styles.categoryText,category===name&& styles.activeText]}>{name}</Text>
-                  
                 </TouchableOpacity>
-                
             </View>
             )})}
         </View>
+        {/* 显示浮动窗口 */}
+      {expandedIcon && iconPosition && (
+        <>
+          {/* 背景灰色遮罩 */}
+          <Pressable style={styles.overlay} onPress={closeOverlay} />
+
+          {/* 悬浮窗口，居中显示 */}
+          <View style={[styles.floatingMenu]}>
+            <Text style={styles.modalTitle}>More options for {expandedIcon}</Text>
+            <View style={styles.subIconContainer}>
+              {iconLib.expense[expandedIcon].map((subIcon: string) => (
+                <TouchableOpacity key={subIcon} style={styles.subIconWrapper}>
+                  <Icon name={subIcon} style={styles.subIcon} more={false} />
+                  <Text style={styles.subIconText}>{subIcon}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </>
+      )}
       </View>
     );
   }
@@ -346,5 +379,47 @@ const styles = StyleSheet.create({
   },
   activeText:{
     color:'orange'
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',  // 半透明灰色背景
+  },
+  floatingMenu: {
+    position: 'absolute',
+    bottom: 100,  // 控制悬浮窗口的位置
+    left: Dimensions.get('window').width / 2 - 150,  // 使其居中显示
+    width: 300,
+    backgroundColor: 'black',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: 'white',
+  },
+  subIconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+  },
+  subIconWrapper: {
+    margin: 10,
+    alignItems: 'center',
+  },
+  subIcon: {
+    width: 40,
+    height: 40,
+  },
+  subIconText: {
+    color: 'white',
+    fontSize: 12,
+    marginTop: 5,
+  },
+   
 });
