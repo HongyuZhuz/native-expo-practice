@@ -150,6 +150,7 @@ function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, act
 
 import { iconLib,Icon } from '@/assets/icons/icon';
 import { Pressable,Dimensions } from 'react-native';
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:{category:string,setCategory:any,subCategory:string|null, setSubCategory:any}) {
   const expenseKeys = Object.keys(iconLib.expense);
@@ -209,7 +210,13 @@ function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:{catego
           <Pressable style={styles.overlay} onPress={closeOverlay} />
 
           {/* 悬浮窗口，居中显示 */}
-          <View style={[styles.floatingMenu]}>
+          <View style={[styles.floatingMenu, 
+            {
+              // 确保浮动窗口不会超出屏幕边界
+              top: Math.min(Math.max(iconPosition.y - 50, 0), screenHeight - 150),  // 150 是预估的窗口高度
+              left: Math.min(Math.max(iconPosition.x - 50, 0), screenWidth - 150),  // 150 是预估的窗口宽度
+            }
+          ]}>
             <View style={styles.subIconContainer}>
               {iconLib.expense[expandedIcon].map((subIcon: string) => (
                 <TouchableOpacity key={subIcon} style={styles.subIconWrapper} onPress = {()=>handleSubIconPress(subIcon)}>
@@ -406,9 +413,7 @@ const styles = StyleSheet.create({
   },
   floatingMenu: {
     position: 'absolute',
-    bottom: 100,  // 控制悬浮窗口的位置
-    left: Dimensions.get('window').width / 2 - 150,  // 使其居中显示
-    width: 300,
+    
     backgroundColor: 'rgb(10,10,10)',
     padding: 10,
     borderRadius: 10,
