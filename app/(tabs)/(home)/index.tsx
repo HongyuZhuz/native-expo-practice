@@ -7,7 +7,7 @@ import { getLatestMonthTotalExpense,getLatestMonthTotalIncome,groupBillsByDate }
 import { Test } from "@/app/ui/home/test"
 import { BillIncludeAccountName,Section } from "@/assets/definition"
 import { getLatestWeekBill } from "@/app/data/database"
-import Fob from "@/app/ui/fob"
+import Fob from "@/app/ui/fob/fob"
 
 
 export default function HomePage() {
