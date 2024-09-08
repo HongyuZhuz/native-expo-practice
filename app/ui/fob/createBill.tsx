@@ -5,6 +5,7 @@ import { Header} from './header';
 import { ExpenseScreen } from './expenseScreen';
 import { IncomeScreen } from './incomeScreen';
 import { TransferScreen } from './transferScreen';
+import { Numpad } from './numPad';
 
 
  export  function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
@@ -26,54 +27,14 @@ import { TransferScreen } from './transferScreen';
   
                 {/*Icon sets*/}
                 
-                  {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
+                {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
                   {activeTab==='Income' && <IncomeScreen/>}
                   {activeTab==='Transfer' &&<TransferScreen/>}
-                
+            
+
+                <Numpad/>
   
-  
-                {/* Calculator component*/}
-                <View style={styles.amountContainer}>
-                    <TextInput
-                        style={styles.amountInput}
-                        value={amount}
-                        editable={false} // Disable manual editing, controlled by the keypad
-                    />
-                    <TouchableOpacity style={styles.currencyIcon}>
-                        <Text style={styles.currencyText}>A$</Text>
-                    </TouchableOpacity>
-                </View>
-  
-                {/* Keypad */}
-                <View style={styles.keypadContainer}>
-                    <View style={styles.keypadRow}>
-                        {/* Each keypad button */}
-                        <TouchableOpacity style={styles.keypadButton} onPress={() => setAmount(amount + "1")}>
-                            <Text style={styles.keypadButtonText}>1</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.keypadButton} onPress={() => setAmount(amount + "2")}>
-                            <Text style={styles.keypadButtonText}>2</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.keypadButton} onPress={() => setAmount(amount + "3")}>
-                            <Text style={styles.keypadButtonText}>3</Text>
-                        </TouchableOpacity>
-                    </View>
-                    {/* ... Repeat rows for other numbers */}
-                    <View style={styles.keypadRow}>
-                        <TouchableOpacity style={styles.keypadButton}>
-                            <Text style={styles.keypadButtonText}>Again</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.keypadButton} onPress={() => setAmount(amount + "0")}>
-                            <Text style={styles.keypadButtonText}>0</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.keypadButton}>
-                            <Text style={styles.keypadButtonText}>.</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity style={styles.saveButton}>
-                        <Text style={styles.saveButtonText}>SAVE</Text>
-                    </TouchableOpacity>
-                </View>
+               
             </View>
         </Modal>
     );
@@ -82,7 +43,9 @@ import { TransferScreen } from './transferScreen';
   const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
+        flexDirection:'column',
         backgroundColor: 'black',
+        justifyContent:'space-between'
     },
     amountContainer: {
         flexDirection: 'row',

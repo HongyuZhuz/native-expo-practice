@@ -92,11 +92,9 @@ export function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:
         textAlign:'center'
     },
     screenContainer: {
-      flex:0,
+      flex:1,
       justifyContent: 'center',
       alignItems: 'center',
-      height:'40%',
-      
     },
     
     iconContainer:{
