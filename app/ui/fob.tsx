@@ -24,6 +24,7 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
   const [amount, setAmount] = useState("0.00");
   const [activeTab, setActiveTab ] = useState('Expense');
   const [category,setCategory] = useState('undefine')
+  const [subCategory,setSubCategory] = useState<string|null>(null)
 
 
   return (
@@ -38,7 +39,7 @@ function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModa
 
               {/*Icon sets*/}
               
-                {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory}/>}
+                {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
                 {activeTab==='Income' && <IncomeScreen/>}
                 {activeTab==='Transfer' &&<TransferScreen/>}
               
@@ -150,7 +151,7 @@ function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>void, act
 import { iconLib,Icon } from '@/assets/icons/icon';
 import { Pressable,Dimensions } from 'react-native';
 
-function ExpenseScreen({category,setCategory}:{category:string,setCategory:any}) {
+function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:{category:string,setCategory:any,subCategory:string|null, setSubCategory:any}) {
   const expenseKeys = Object.keys(iconLib.expense);
   const [expandedIcon, setExpandedIcon] = useState<string | null>(null);  // 用于保存当前展开的图标
   const [iconPosition, setIconPosition] = useState<{ x: number, y: number } | null>(null);  // 保存图标位置
@@ -161,31 +162,46 @@ function ExpenseScreen({category,setCategory}:{category:string,setCategory:any})
     if (iconLib.expense[name] && iconLib.expense[name].length > 0) {
       setExpandedIcon(name);
       setCategory(name);
+      
       setIconPosition({ x: pageX, y: pageY });  // 设置图标的坐标位置
     } else {
       setCategory(name);
       setExpandedIcon(null);
     }
+    setSubCategory(null)
   };
+
+  const handleSubIconPress = (subIcon:string) =>{
+    setSubCategory(subIcon)
+    console.log(subIcon)
+    closeOverlay()
+  }
 
   const closeOverlay = () => {
     setExpandedIcon(null);  // 关闭弹出窗口
   };
     return (
       <View style={styles.screenContainer}>
-        <View style={styles.iconContainer}>
-          {expenseKeys.map((name)=>{
-            return(
-              <View  key={name} style = {styles.iconGroup}>
-                <TouchableOpacity onPress={(event) => handleIconPress(name,event)} style={styles.iconGroup}>
-                  <View style = {[styles.iconWrapper, category === name && styles.activeIcon]}>
-                  <Icon name={name} style={styles.icon} more={iconLib.expense[name] && iconLib.expense[name].length > 0} />
+      <View style={styles.iconContainer}>
+        {expenseKeys.map((name) => {
+          const isActiveCategory = category === name;
+          const iconName = isActiveCategory && subCategory && iconLib.expense[name].includes(subCategory)? subCategory : name; // 根据 subCategory 和 category 显示不同的图标
+          const displayText = isActiveCategory && subCategory && iconLib.expense[name].includes(subCategory)? `${name}.${subCategory}` : name; // 显示名称
+
+              return (
+                <View key={name} style={styles.iconGroup}>
+                  <TouchableOpacity onPress={(event) => handleIconPress(name, event)} style={styles.iconGroup}>
+                    <View style={[styles.iconWrapper, isActiveCategory && styles.activeIcon]}>
+                      <Icon name={iconName} style={styles.icon} more={iconLib.expense[name]?.length > 0} />
                     </View>
-                  <Text style={[styles.categoryText,category===name&& styles.activeText]}>{name}</Text>
-                </TouchableOpacity>
-            </View>
-            )})}
-        </View>
+                    <Text style={[styles.categoryText, isActiveCategory && styles.activeText]}>
+                      {displayText}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+      </View>
         {/* 显示浮动窗口 */}
       {expandedIcon && iconPosition && (
         <>
@@ -194,10 +210,9 @@ function ExpenseScreen({category,setCategory}:{category:string,setCategory:any})
 
           {/* 悬浮窗口，居中显示 */}
           <View style={[styles.floatingMenu]}>
-            <Text style={styles.modalTitle}>More options for {expandedIcon}</Text>
             <View style={styles.subIconContainer}>
               {iconLib.expense[expandedIcon].map((subIcon: string) => (
-                <TouchableOpacity key={subIcon} style={styles.subIconWrapper}>
+                <TouchableOpacity key={subIcon} style={styles.subIconWrapper} onPress = {()=>handleSubIconPress(subIcon)}>
                   <Icon name={subIcon} style={styles.subIcon} more={false} />
                   <Text style={styles.subIconText}>{subIcon}</Text>
                 </TouchableOpacity>
@@ -357,14 +372,15 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:'row',
     flexWrap:'wrap',
-    justifyContent:'center',
+    justifyContent:'space-between',
     alignItems:'center',
+    marginTop:20,
+    marginHorizontal:20
   },
   iconGroup:{
-    flex:1,
-    width:100,
+    alignSelf: 'flex-start', 
+    width:70,
     alignItems:'center',
-    marginTop:20
   },
   icon:{
     width:30,
@@ -393,15 +409,10 @@ const styles = StyleSheet.create({
     bottom: 100,  // 控制悬浮窗口的位置
     left: Dimensions.get('window').width / 2 - 150,  // 使其居中显示
     width: 300,
-    backgroundColor: 'black',
+    backgroundColor: 'rgb(10,10,10)',
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 16,
-    marginBottom: 10,
-    color: 'white',
   },
   subIconContainer: {
     flexDirection: 'row',
@@ -413,8 +424,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subIcon: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
   },
   subIconText: {
     color: 'white',
