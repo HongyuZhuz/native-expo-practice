@@ -1,6 +1,5 @@
-import { View, Text, TouchableOpacity, Modal, StyleSheet} from 'react-native';
+import { View, Modal, StyleSheet} from 'react-native';
 import { useState,} from 'react';
-import { TextInput} from 'react-native';
 import { Header} from './header';
 import { ExpenseScreen } from './expenseScreen';
 import { IncomeScreen } from './incomeScreen';
@@ -32,7 +31,7 @@ import { Numpad } from './numPad';
                   {activeTab==='Transfer' &&<TransferScreen/>}
             
 
-                <Numpad/>
+                <Numpad setAmount = {setAmount} amount = {amount}/>
   
                
             </View>
