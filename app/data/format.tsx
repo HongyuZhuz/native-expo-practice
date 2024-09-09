@@ -7,10 +7,10 @@ export function Icon({ name }: { name: string }) {
   return <Image src={require('../../assets/icons/shopping.svg')} alt={name} style={{ width: 24, height: 24, }}/>;
 }
 
-export const FormattedAmount = ({amount, currency}:{amount:number,currency:string})=>{
+export const FormattedAmount = ({amount, currency,style}:{amount:number,currency:string, style?:{}})=>{
     return(
         <IntlProvider locale="en">
-            <Text>
+            <Text style={style}>
                 <FormattedNumber 
                     value={amount} 
                     style="currency"

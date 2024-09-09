@@ -1,16 +1,37 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { useState,useContext,createContext } from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+interface GlobalContextType {
+  currency:string;
+  setCurrency:(value:string)=>void
+}
+const defaultValue = {
+  currency:'AUD',
+  setCurrency:()=>{}
+}
+export const GlobalStateContext = createContext<GlobalContextType>(defaultValue);
+
+const GlobalStateProvider = ({children}:{children:any})=>{
+  const [currency, setCurrency] = useState('AUD');
+
+  return(
+    <GlobalStateContext.Provider value={{currency, setCurrency }}>
+      {children}
+    </GlobalStateContext.Provider>
+  )
+}
+
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
-
+    <GlobalStateProvider>
       <NavTabs/>
+    </GlobalStateProvider>
     
   );
 }
