@@ -35,20 +35,20 @@ export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
                         allowDecimal={true}
                         onValueChange={value => setAmount(value)}
                         buttonAreaStyle={{ backgroundColor: 'rgb(15,15,15)' }}
-                        buttonTextStyle={{color:'white',}}
+                        buttonTextStyle={styles.buttonText}
                         buttonItemStyle={{backgroundColor:'black',borderRadius:5,width:'95%'}}
-                        rightBottomButton={<Ionicons name={'backspace-outline'} size={28} color={'white'}/>}
+                        rightBottomButton={<Text style={styles.buttonText}>AC</Text>}
                         buttonSize={60}
                         activeOpacity={0.1}
     
-                        onRightBottomButtonPress={() => {numpadRef.current.clear()}}      
+                        onRightBottomButtonPress={() => {numpadRef.current.clearAll()}}      
                     />
                 </View>
                 <View style={styles.saveButtonContainer}>
+                    <TouchableOpacity style={styles.clearButton} onPress={()=>{numpadRef.current.clear()}}><Ionicons name={'backspace-outline'} size={28} color={'white'} /></TouchableOpacity>
+                    
                     <TouchableOpacity style={styles.saveButton}><Text style={styles.saveTxt}>Save</Text></TouchableOpacity>
                 </View>
-                    
-                
             </View> 
         </>
         
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     fontWeight:'600'
     },
     inputContiner:{
-        alignItems:'flex-end'
+        alignItems:'flex-end',
+        marginHorizontal:10
     },
     saveTxt:{
         color:'white',
@@ -79,19 +80,35 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     numPadContainer:{
-        flex:5,
+        flex:4,
 
     },
     saveButtonContainer:{
         flex:1,
-        paddingVertical:8
+        paddingVertical:8,
+        flexDirection:'column'
         
     },
     saveButton:{
-        flex:1,
+        flex:3,
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'orange',
-        borderRadius:10,
+        borderRadius:5,
+    },
+    buttonText:{
+        color:'white',
+        fontSize:24,
+       
+    },
+    clearButton:{
+        alignItems:'center',
+        justifyContent:'center',
+        width:'100%',
+        marginBottom:12,
+        height:60,
+        backgroundColor:'black',
+        
+        borderRadius:5
     }
 })
