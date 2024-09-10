@@ -1,4 +1,4 @@
-import { View, Modal, StyleSheet} from 'react-native';
+import { View, Modal, StyleSheet,Dimensions} from 'react-native';
 import { useState,} from 'react';
 import { Header} from './header';
 import { ExpenseScreen } from './expenseScreen';
@@ -6,6 +6,7 @@ import { IncomeScreen } from './incomeScreen';
 import { TransferScreen } from './transferScreen';
 import { Numpad } from './numPad';
 
+const { width, height } = Dimensions.get('window');
 
  export  function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
     const [amount, setAmount] = useState("0.00");
@@ -19,22 +20,31 @@ import { Numpad } from './numPad';
             transparent={false}
             visible={modalVisible}
             animationType="slide"
+            
         >
             <View style={styles.modalContainer}>
-                {/* Header */}
-                <Header toggleModal={toggleModal} activeTab = {activeTab} setActiveTab = {setActiveTab}/>
+
+                <View style={styles.header}>
+                    <Header toggleModal={toggleModal} activeTab = {activeTab} setActiveTab = {setActiveTab}/>
+                </View>
+                
   
                 {/*Icon sets*/}
-                
+            <View style={styles.screenContainer}>
                 {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
-                  {activeTab==='Income' && <IncomeScreen/>}
-                  {activeTab==='Transfer' &&<TransferScreen/>}
+                {activeTab==='Income' && <IncomeScreen/>}
+                {activeTab==='Transfer' &&<TransferScreen/>}
+            </View>
+                
             
-
+            <View style={styles.numPadContainer}>
                 <Numpad setAmount = {setAmount} amount = {amount}/>
+            </View>
+            </View>
+                
   
                
-            </View>
+
         </Modal>
     );
   }
@@ -44,59 +54,32 @@ import { Numpad } from './numPad';
         flex: 1,
         flexDirection:'column',
         backgroundColor: 'black',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        gap:3
     },
-    amountContainer: {
-        flexDirection: 'row',
+    numPadContainer:{
+        flex:1,
+        backgroundColor:'rgb(15,15,15)',
+        borderRadius:10,
+        paddingBottom:30
+    },
+    screenContainer:{
+        backgroundColor:'rgb(15,15,15)',
+        borderRadius:10,
+        flex:1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 20,
     },
-
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        paddingVertical: 0,
+        backgroundColor: 'rgb(15,15,15)',
+        alignItems: 'center',
+        paddingTop:60,
+        paddingBottom:10,
+        borderRadius:10
+    },
    
-    amountInput: {
-        color: 'orange',
-        fontSize: 36,
-    },
-    currencyIcon: {
-        marginLeft: 10,
-    },
-    currencyText: {
-        color: 'orange',
-        fontSize: 18,
-    },
-    keypadContainer: {
-        flex: 1,
-        backgroundColor: 'black',
-        padding: 10,
-    },
-    keypadRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 20,
-    },
-    keypadButton: {
-        backgroundColor: '#333',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 80,
-        height: 80,
-        borderRadius: 10,
-    },
-    keypadButtonText: {
-        color: 'white',
-        fontSize: 24,
-    },
-    saveButton: {
-        backgroundColor: 'orange',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 60,
-        borderRadius: 10,
-        marginHorizontal: 20,
-    },
-    saveButtonText: {
-        color: 'white',
-        fontSize: 20,
-    },  
   });

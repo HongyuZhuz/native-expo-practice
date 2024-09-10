@@ -34,7 +34,7 @@ export function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:
     setExpandedIcon(null);  // 关闭弹出窗口
   };
     return (
-      <View style={styles.screenContainer}>
+      <>
       <View style={styles.iconContainer}>
         {expenseKeys.map((name) => {
           const isActiveCategory = category === name;
@@ -80,7 +80,7 @@ export function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:
           </View>
         </>
       )}
-      </View>
+      </>
     );
   }
 
@@ -91,11 +91,7 @@ export function ExpenseScreen({category,setCategory,subCategory,setSubCategory}:
         fontSize:12,
         textAlign:'center'
     },
-    screenContainer: {
-      flex:1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
+
     
     iconContainer:{
       flex:1,

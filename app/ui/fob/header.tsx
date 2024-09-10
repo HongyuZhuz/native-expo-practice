@@ -24,7 +24,7 @@ export function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>vo
   };
 
   return (   
-              <View style={styles.header}>
+              <>
                   <TouchableOpacity onPress={toggleModal}>
                       <AntDesign name="left" size={24} color="white" />
                   </TouchableOpacity>
@@ -53,7 +53,7 @@ export function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>vo
                   <TouchableOpacity>
                       <AntDesign name="setting" size={24} color="white" />
                   </TouchableOpacity>
-              </View>
+              </>
   )
 }
 

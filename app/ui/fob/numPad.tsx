@@ -1,9 +1,11 @@
 import  NumericPad  from  'react-native-numeric-pad'
 import { useRef,useContext } from 'react'
-import { View,TextInput,StyleSheet,Text,TouchableOpacity } from 'react-native'
+import { View,TextInput,StyleSheet,Text,TouchableOpacity,Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { FormattedAmount } from '@/app/data/format'
 import { GlobalStateContext } from '@/app/(tabs)/_layout'
+
+const { width, height } = Dimensions.get('window');
 
 
 export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
@@ -11,7 +13,7 @@ export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
     const { currency, setCurrency } = useContext(GlobalStateContext);
 
     return(
-        <View>
+        <>
             <View style={styles.inputContiner}>
                 {/*<TextInput
                 style={styles.amountTxt}
@@ -27,24 +29,28 @@ export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
                 </View>
                 
             </View>
-            <View style={styles.numPadContainer}>
-                <NumericPad ref={numpadRef} numLength={8} 
-                    allowDecimal={true}
-                    onValueChange={value => setAmount(value)}
-                    buttonAreaStyle={{ backgroundColor: 'black', paddingRight:60 }}
-                    buttonTextStyle={{color:'white'}}
-                    rightBottomButton={<Ionicons name={'backspace-outline'} size={28} color={'white'}/>}
-                    buttonSize={60}
-                    activeOpacity={0.1}
-                    onRightBottomButtonPress={() => {numpadRef.current.clear()}}      
-                />
+            <View style={styles.padContainer}>
                 <View style={styles.numPadContainer}>
-                <TouchableOpacity><Text style={styles.saveTxt}>Save</Text></TouchableOpacity>
+                    <NumericPad ref={numpadRef} numLength={8} 
+                        allowDecimal={true}
+                        onValueChange={value => setAmount(value)}
+                        buttonAreaStyle={{ backgroundColor: 'rgb(15,15,15)' }}
+                        buttonTextStyle={{color:'white',}}
+                        buttonItemStyle={{backgroundColor:'black',borderRadius:5,width:'95%'}}
+                        rightBottomButton={<Ionicons name={'backspace-outline'} size={28} color={'white'}/>}
+                        buttonSize={60}
+                        activeOpacity={0.1}
+    
+                        onRightBottomButtonPress={() => {numpadRef.current.clear()}}      
+                    />
                 </View>
+                <View style={styles.saveButtonContainer}>
+                    <TouchableOpacity style={styles.saveButton}><Text style={styles.saveTxt}>Save</Text></TouchableOpacity>
+                </View>
+                    
                 
-            </View>
-            
-        </View>
+            </View> 
+        </>
         
     )
 }
@@ -54,20 +60,38 @@ const styles = StyleSheet.create({
         fontSize: 30,
     lineHeight: 40,
     marginTop: 20,
-    color: 'orange'
+    color: 'orange',
+    fontWeight:'600'
     },
     inputContiner:{
-        backgroundColor:'black',
         alignItems:'flex-end'
     },
     saveTxt:{
-        color:'orange',
-        fontSize:100,
-        margin:0
+        color:'white',
+        fontSize:20,
+        margin:0,
+        justifyContent:'center'
+    },
+    padContainer:{
+        flex:1,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
     },
     numPadContainer:{
-        flexDirection:'column',
-        borderColor:'white',
-        borderWidth:5
+        flex:5,
+
+    },
+    saveButtonContainer:{
+        flex:1,
+        paddingVertical:8
+        
+    },
+    saveButton:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'orange',
+        borderRadius:10,
     }
 })
