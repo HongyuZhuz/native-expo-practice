@@ -61,7 +61,7 @@ const { width, height } = Dimensions.get('window');
         flex:1,
         backgroundColor:'rgb(15,15,15)',
         borderRadius:10,
-        paddingBottom:30
+        paddingBottom:30,
     },
     screenContainer:{
         backgroundColor:'rgb(15,15,15)',
