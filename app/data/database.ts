@@ -196,6 +196,8 @@ export async function updateAccount (account_id:string,account_name:string) {
   }
 }
 
+import { BillType } from '@/assets/definition';
+
 export async function getBills () {
   db = await SQLite.openDatabaseAsync(databaseName);
   try{
@@ -208,7 +210,7 @@ export async function getBills () {
 }
 
 
-type BillType = 'income'|'cost'|'transfer'
+
 export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="",bill_id?:string) {
   if (!bill_id) {
     bill_id = uuidv4();

@@ -53,7 +53,7 @@ export default function HomePage() {
   };
   return (
     <View>
-      <Fob/>
+      <Fob refresh = {onRefresh}/>
       <ScrollView
     refreshControl={
       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

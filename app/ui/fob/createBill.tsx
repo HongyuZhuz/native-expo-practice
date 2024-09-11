@@ -5,16 +5,22 @@ import { ExpenseScreen } from './expenseScreen';
 import { IncomeScreen } from './incomeScreen';
 import { TransferScreen } from './transferScreen';
 import { Numpad } from './numPad';
+import { createBill } from '@/app/data/database';
+import { BillType } from '@/assets/definition';
 
-const { width, height } = Dimensions.get('window');
 
  export  function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
-    const [amount, setAmount] = useState("0.00");
-    const [activeTab, setActiveTab ] = useState('Expense');
+    const [amount, setAmount] = useState<string>("0.00");
+    const [activeTab, setActiveTab ] = useState<BillType>('cost');
     const [category,setCategory] = useState('undefine')
     const [subCategory,setSubCategory] = useState<string|null>(null)
-    const [description,setDescription] = useState<string|null> (null)
-  
+    const [description,setDescription] = useState<string> ("")
+
+    const onSubmit =async() =>{
+        console.log("submit")
+        await createBill("test3",activeTab,Number(amount),description)
+        toggleModal()
+    }
   
     return (
         <Modal
@@ -32,14 +38,14 @@ const { width, height } = Dimensions.get('window');
   
                 {/*Icon sets*/}
             <View style={styles.screenContainer}>
-                {activeTab==='Expense' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
-                {activeTab==='Income' && <IncomeScreen/>}
-                {activeTab==='Transfer' &&<TransferScreen/>}
+                {activeTab==='cost' && <ExpenseScreen category = {category} setCategory = {setCategory} subCategory = {subCategory} setSubCategory = {setSubCategory}/>}
+                {activeTab==='income' && <IncomeScreen/>}
+                {activeTab==='transfer' &&<TransferScreen/>}
             </View>
                 
             
             <View style={styles.numPadContainer}>
-                <Numpad setAmount = {setAmount} amount = {amount} description = {description} setDescription = {setDescription}/>
+                <Numpad setAmount = {setAmount} amount = {amount} setDescription = {setDescription} handleSubmit = {onSubmit}/>
             </View>
             </View>
                 

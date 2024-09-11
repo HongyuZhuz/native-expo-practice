@@ -29,3 +29,4 @@ export interface Section {
   title: string;
   data: BillIncludeAccountName[];
 }
+export type BillType = 'income'|'cost'|'transfer'

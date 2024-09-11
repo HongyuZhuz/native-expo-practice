@@ -7,9 +7,9 @@ import { GlobalStateContext } from '@/app/(tabs)/_layout'
 
 
 
-export function Numpad ({setAmount,amount,description, setDescription}:{setAmount:any, amount:string,description:string,setDescription:any}) {
+export function Numpad ({setAmount,amount, setDescription, handleSubmit}:{setAmount:any, amount:string,setDescription:any, handleSubmit:()=>{}}) {
     const numpadRef = useRef(null)
-    const { currency, setCurrency } = useContext(GlobalStateContext);
+    const { currency} = useContext(GlobalStateContext);
 
     return(
         <>
@@ -42,7 +42,7 @@ export function Numpad ({setAmount,amount,description, setDescription}:{setAmoun
                 </View>
                 <View style={styles.saveButtonContainer}>
                     <TouchableOpacity style={styles.clearButton} onPress={()=>{numpadRef.current.clear()}}><Ionicons name={'backspace-outline'} size={28} color={'white'} /></TouchableOpacity>
-                    <TouchableOpacity style={styles.saveButton}><Text style={styles.saveTxt}>Save</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}><Text style={styles.saveTxt}>Save</Text></TouchableOpacity>
                 </View>
                 
             </View> 

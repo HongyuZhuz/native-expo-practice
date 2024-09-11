@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { CreateBill } from './createBill';
 
 
-export default function Fob () {
+export default function Fob ({refresh}:{refresh:()=>{}}) {
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
+    refresh()
   };
 
     return(

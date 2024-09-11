@@ -8,7 +8,10 @@ export function Header ({toggleModal,activeTab,setActiveTab}:{toggleModal:()=>vo
     const tabWidth = tabContainerWidth / 3; // 假设有3个Tab
 
   const handleTabPress = (tab:string) => {
-    setActiveTab(tab);
+    if(tab==='Income') setActiveTab('income')
+    else if(tab==='Expense') setActiveTab('cost')
+    else if(tab==='Transfer') setActiveTab('transfer')
+    
 
     // 计算目标位置
     let toValue = 0;
