@@ -7,7 +7,7 @@ import { GlobalStateContext } from '@/app/(tabs)/_layout'
 
 
 
-export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
+export function Numpad ({setAmount,amount,description, setDescription}:{setAmount:any, amount:string,description:string,setDescription:any}) {
     const numpadRef = useRef(null)
     const { currency, setCurrency } = useContext(GlobalStateContext);
 
@@ -18,8 +18,9 @@ export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
          >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex:1}}>
                 <View style={styles.inputContiner}>
-                    <TextInput autoFocus={false} editable={true} placeholder='Click to input description' style={styles.descripetionInput} selectionColor="orange" />
-                    <FormattedAmount amount={Number(amount)} currency={currency} style={styles.amountTxt}/>
+                    <TextInput autoFocus={false} editable={true} placeholder='Click to input description' style={styles.descripetionInput} selectionColor="orange" 
+                    onChangeText={(text:string) => setDescription(text)}/>
+                    <FormattedAmount amount={Number(amount)} currency={currency} style={styles.amountTxt}  />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>  

@@ -1,5 +1,5 @@
 import { View, Modal, StyleSheet,Dimensions} from 'react-native';
-import { useState,} from 'react';
+import { useEffect, useState,} from 'react';
 import { Header} from './header';
 import { ExpenseScreen } from './expenseScreen';
 import { IncomeScreen } from './incomeScreen';
@@ -13,6 +13,7 @@ const { width, height } = Dimensions.get('window');
     const [activeTab, setActiveTab ] = useState('Expense');
     const [category,setCategory] = useState('undefine')
     const [subCategory,setSubCategory] = useState<string|null>(null)
+    const [description,setDescription] = useState<string|null> (null)
   
   
     return (
@@ -38,7 +39,7 @@ const { width, height } = Dimensions.get('window');
                 
             
             <View style={styles.numPadContainer}>
-                <Numpad setAmount = {setAmount} amount = {amount}/>
+                <Numpad setAmount = {setAmount} amount = {amount} description = {description} setDescription = {setDescription}/>
             </View>
             </View>
                 
