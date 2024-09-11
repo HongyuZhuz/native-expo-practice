@@ -36,7 +36,7 @@ export function Numpad ({setAmount,amount}:{setAmount:any, amount:string}) {
                         onValueChange={value => setAmount(value)}
                         buttonAreaStyle={{ backgroundColor: 'rgb(15,15,15)' }}
                         buttonTextStyle={styles.buttonText}
-                        buttonItemStyle={{backgroundColor:'black',borderRadius:5,width:'95%'}}
+                        buttonItemStyle={{backgroundColor:'black',borderRadius:5,width:'95%',opacity:1}}
                         rightBottomButton={<Text style={styles.buttonText}>AC</Text>}
                         buttonSize={60}
                         activeOpacity={0.1}
@@ -71,20 +71,22 @@ const styles = StyleSheet.create({
         color:'white',
         fontSize:20,
         margin:0,
-        justifyContent:'center'
+        justifyContent:'center',
+        fontWeight:'700'
     },
     padContainer:{
         flex:1,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center',
+        paddingRight:2
     },
     numPadContainer:{
-        flex:4,
+        flex:6,
 
     },
     saveButtonContainer:{
-        flex:1,
+        flex:2,
         paddingVertical:8,
         flexDirection:'column'
         
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         backgroundColor:'orange',
         borderRadius:5,
+
     },
     buttonText:{
         color:'white',
@@ -107,8 +110,8 @@ const styles = StyleSheet.create({
         width:'100%',
         marginBottom:12,
         height:60,
-        backgroundColor:'black',
-        
+        backgroundColor:'rgb(8,8,8)',
+        opacity:1,
         borderRadius:5
     }
 })
