@@ -5,7 +5,7 @@ import { ExpenseScreen } from './expenseScreen';
 import { IncomeScreen } from './incomeScreen';
 import { TransferScreen } from './transferScreen';
 import { Numpad } from './numPad';
-import { createBill } from '@/app/data/database';
+import { createBill,getCategoryId } from '@/app/data/database';
 import { BillType } from '@/assets/definition';
 
 
@@ -18,7 +18,9 @@ import { BillType } from '@/assets/definition';
 
     const onSubmit =async() =>{
         console.log("submit")
-        await createBill("c42a5364-5b5f-4276-9b5b-18269f2e80b7",activeTab,Number(amount),description)
+        let categoryId
+        subCategory?categoryId = await getCategoryId(subCategory):categoryId = await getCategoryId(category)
+        await createBill("c42a5364-5b5f-4276-9b5b-18269f2e80b7",activeTab,Number(amount),description,undefined,undefined,categoryId?categoryId:undefined)
         toggleModal()
     }
   

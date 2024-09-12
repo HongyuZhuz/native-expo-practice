@@ -282,9 +282,24 @@ export async function getBills () {
   }
 }
 
+export async function getCategoryId (category_name:string){
+  try{
+    db = await SQLite.openDatabaseSync(databaseName)
+    const result = await db.getFirstAsync(`SELECT category_id FROM Category WHERE category_name = ?`,category_name)
+    
+    const castResult = result as {category_id:string}|undefined;
+    console.log("2222")
+    console.log(castResult)
+
+    return castResult ?.category_id || null;
+  }catch(e){
+    console.log("get Category Id error"+e)
+  }
+}
 
 
-export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="",bill_id?:string) {
+
+export async function createBill (account_id:string,type:BillType,amount:number,description:string="",target_account_id:string ="",bill_id?:string,category_id:string="") {
   if (!bill_id) {
     bill_id = uuidv4();
   }
@@ -292,12 +307,12 @@ export async function createBill (account_id:string,type:BillType,amount:number,
 
   db = await SQLite.openDatabaseAsync(databaseName);
   const statement = await db.prepareAsync(
-    `INSERT INTO Bill (bill_id,account_id,type,amount,description,created_at,target_account_id)  
-    VALUES ($bill_id,$account_id,$type, $amount,$description,CURRENT_TIMESTAMP,$target_account_id);
+    `INSERT INTO Bill (bill_id,account_id,type,amount,description,created_at,target_account_id,category_id)  
+    VALUES ($bill_id,$account_id,$type, $amount,$description,CURRENT_TIMESTAMP,$target_account_id,$category_id);
     `
   )
   try {
-    let result = await statement.executeAsync({$bill_id:bill_id, $account_id:account_id,$type:type,$amount:amount,$description:description,$target_account_id:target_account_id});
+    let result = await statement.executeAsync({$bill_id:bill_id, $account_id:account_id,$type:type,$amount:amount,$description:description,$target_account_id:target_account_id,$category_id:category_id});
     console.log("try to update bill")
     console.log(result)
 
@@ -401,6 +416,8 @@ ORDER BY
 
     if (bills){
       const newBills = changeBillsToLocalTime(bills as BillIncludeAccountName[])
+      console.log("牛逼")
+      console.log(newBills)
       return newBills
     }else{
       console.log("didn't find the bill")
