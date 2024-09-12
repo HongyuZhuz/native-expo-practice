@@ -120,10 +120,83 @@ export async function createTable() {
         WHERE account_id = OLD.target_account_id;
       END; `
     )
+
+    await createCategoriesFromIconLib()
+    await fetchAndPrintCategories()
     
 
   } catch (e) {
     console.error("Failed to create table", e);
+  }
+}
+
+import { iconLib } from '@/assets/icons/icon';
+
+async function createCategoriesFromIconLib() {
+  try {
+    db = await SQLite.openDatabaseAsync(databaseName);
+
+    for (const [parentCategory, children] of Object.entries(iconLib.expense)) {
+      // 检查父分类是否已经存在
+      const parentExists = await categoryExists(parentCategory);
+      let parentId;
+
+      if (!parentExists) {
+        // 如果父分类不存在，则生成 ID 并插入
+        parentId = uuidv4()
+        await db.runAsync(
+          `INSERT INTO Category (category_id, category_name, icon_name) VALUES (?, ?,?)`, parentId,parentCategory,parentCategory
+        );
+      } else {
+        // 如果父分类已经存在，获取其 category_id
+        parentId = parentExists;
+      }
+
+      // 插入子分类
+      if (children.length > 0) {
+        for (const childCategory of children) {
+          const childExists = await categoryExists(childCategory);
+
+          if (!childExists) {
+            const childId = uuidv4()
+            await db.runAsync(
+              `INSERT INTO Category (category_id, category_name,icon_name, parent_category_id) 
+              VALUES (?,?,?,?)`,childId,childCategory,childCategory,parentId
+            );
+          } else {
+            console.log(`Category ${childCategory} already exists, skipping...`);
+          }
+        }
+      }
+    }
+
+    console.log("Categories created successfully from iconLib!");
+
+  } catch (e) {
+    console.error("Failed to create categories from iconLib", e);
+  }
+}
+
+// 检查 category 是否已经存在的函数
+async function categoryExists(categoryName:string) {
+  db = await SQLite.openDatabaseAsync(databaseName);
+  const result = await db.getFirstAsync(
+    `SELECT category_id FROM Category WHERE category_name = ?`,categoryName
+  );
+  const castResult = result as {category_id:string}|undefined;
+
+  return castResult ?.category_id || null;
+}
+
+export async function fetchAndPrintCategories() {
+  try {
+    db = await SQLite.openDatabaseAsync(databaseName);
+    const allRows = await db.getAllAsync('SELECT * FROM Category')
+    for (const row of allRows){
+      console.log(row)
+    }
+  } catch (e) {
+    console.error("Failed to fetch categories", e);
   }
 }
 

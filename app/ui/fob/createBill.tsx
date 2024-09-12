@@ -18,7 +18,7 @@ import { BillType } from '@/assets/definition';
 
     const onSubmit =async() =>{
         console.log("submit")
-        await createBill("test3",activeTab,Number(amount),description)
+        await createBill("c42a5364-5b5f-4276-9b5b-18269f2e80b7",activeTab,Number(amount),description)
         toggleModal()
     }
   
