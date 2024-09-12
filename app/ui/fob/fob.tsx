@@ -8,13 +8,12 @@ export default function Fob ({refresh}:{refresh:()=>{}}) {
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
-    refresh()
   };
 
     return(
         <TouchableOpacity style={styles.fab} activeOpacity={1} onPress={toggleModal}>
             <AntDesign name="plus" size={24} color="white" />
-            <CreateBill modalVisible={modalVisible} toggleModal={toggleModal}/>
+            <CreateBill modalVisible={modalVisible} toggleModal={toggleModal} refresh = {refresh}/>
         </TouchableOpacity>
         
     )

@@ -9,7 +9,7 @@ import { createBill,getCategoryId } from '@/app/data/database';
 import { BillType } from '@/assets/definition';
 
 
- export  function CreateBill ({modalVisible,toggleModal}:{modalVisible:boolean,toggleModal:()=>void}) {
+ export  function CreateBill ({modalVisible,toggleModal,refresh}:{modalVisible:boolean,toggleModal:()=>void,refresh:()=>{}}) {
     const [amount, setAmount] = useState<string>("0.00");
     const [activeTab, setActiveTab ] = useState<BillType>('cost');
     const [category,setCategory] = useState('undefine')
@@ -22,6 +22,7 @@ import { BillType } from '@/assets/definition';
         subCategory?categoryId = await getCategoryId(subCategory):categoryId = await getCategoryId(category)
         await createBill("c42a5364-5b5f-4276-9b5b-18269f2e80b7",activeTab,Number(amount),description,undefined,undefined,categoryId?categoryId:undefined)
         toggleModal()
+        refresh()
     }
   
     return (

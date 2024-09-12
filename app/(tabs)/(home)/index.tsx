@@ -64,7 +64,6 @@ export default function HomePage() {
       options={{ headerShown: true, title:'Home'}}></Stack.Screen>
       <MonthlyExpense month={getCurrentMonthAbbreviation()} expense={expense} income={income} currency="AUD"/>
       <LastSevenDayBillsSectionList section={section}/>
-      <Test></Test>
     </ScrollView>
     </View>
     
