@@ -4,6 +4,8 @@ import { BillIncludeAccountName,Section } from "@/assets/definition";
 import { totalExpense, totalIncome } from "@/app/data/calculate";
 import { FormattedAmount,FormatDate, formatTime } from "@/app/data/format";
 import { Icon } from "@/assets/icons/icon";
+import { useState } from "react";
+import { BillModal } from "./billModal";
 
 
 export default function LastSevenDayBillsSectionList({section}:{section:Section[]}) {
@@ -54,6 +56,8 @@ export function LastSevenDayBillsHeader () {
 
 
 function ListItem ({bill}:{bill:BillIncludeAccountName}) {
+  const [billModal, setBillModal]=useState<boolean>(false)
+
 
   let content=<Text></Text>
   if(bill.type ==='cost'){
@@ -77,8 +81,14 @@ function ListItem ({bill}:{bill:BillIncludeAccountName}) {
               </View>
   }
 
+  const toggleModal = () =>{
+    setBillModal(!billModal)
+    console.log(billModal)
+  }
+
 
   return(
+    <TouchableWithoutFeedback onPress={toggleModal}>
     <View>
     <View style={listDetailStyles.mainView}>
     {bill.type==='transfer'?
@@ -101,13 +111,17 @@ function ListItem ({bill}:{bill:BillIncludeAccountName}) {
           <Text style={listDetailStyles.time}>{formatTime(bill.created_at)}</Text>
           {bill.description?<Text style={listDetailStyles.time}>{bill.description}</Text>:<></>}
         </View>
+      
       </View>
     }
       
       {content}
     </View>
     <View style={listDetailStyles.divider}/>
+    <BillModal modalVisible={billModal} toggleModal={toggleModal} bill={bill}></BillModal>
     </View>
+    
+    </TouchableWithoutFeedback>
   )
 }
 
