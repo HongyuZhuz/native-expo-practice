@@ -1,5 +1,6 @@
 import { BillIncludeAccountName } from "@/assets/definition";
 import { Modal,Text,StyleSheet,TouchableOpacity,View } from "react-native"
+import { Icon } from "@/assets/icons/icon";
 
 export function BillModal ( {modalVisible, toggleModal,bill}:{modalVisible:boolean,toggleModal:()=>void,bill:BillIncludeAccountName}) {
     console.log("pressed bills")
@@ -16,10 +17,20 @@ export function BillModal ( {modalVisible, toggleModal,bill}:{modalVisible:boole
         onPressOut={toggleModal} // 点击背景关闭弹窗
       >
         <View style={styles.modalContent}>
-          <Text style={styles.text}>{bill.account_name+bill.category_name+bill.created_at+bill.amount}</Text>
+          <ModalDetail bill={bill}/>
         </View>
       </TouchableOpacity>
     </Modal>
+    )
+}
+
+function ModalDetail ({bill}:{bill:BillIncludeAccountName}){
+    return(
+        <View>
+            <Icon name = {bill.icon_name?bill.icon_name:"undefined"}/>
+            <Text style={styles.text}>{bill.category_name}</Text>
+            <Text style={styles.text}>{bill.amount}</Text>
+        </View>
     )
 }
 
@@ -30,7 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
       modalContent: {
-        width: '80%', // 根据需要调整宽度
+        width: '100%', // 根据需要调整宽度
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 10,
