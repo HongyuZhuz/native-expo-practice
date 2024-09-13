@@ -99,6 +99,7 @@ function ListItem ({bill}:{bill:BillIncludeAccountName}) {
         <View style={listDetailStyles.categoryView}>
           {bill.category_name?(bill.parent_category_name?<Text style={listDetailStyles.category}>{bill.parent_category_name+"."+bill.category_name}</Text>:<Text style={listDetailStyles.category}>{bill.category_name}</Text>):<Text style={listDetailStyles.category}>Undefined</Text>}
           <Text style={listDetailStyles.time}>{formatTime(bill.created_at)}</Text>
+          {bill.description?<Text style={listDetailStyles.time}>{bill.description}</Text>:<></>}
         </View>
       </View>
     }
