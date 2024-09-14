@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+# Expense Tracker Mobile App💸
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Project Overview
 
-## Get started
+**Expense Tracker App** is a mobile application designed to help users record and track their daily expenses while providing insightful data analysis. The app allows users to categorize their expenses, set budgets, and visualize their spending habits through data-driven reports and graphs.
 
-1. Install dependencies
+🔗 Current Status: Under development 🚧
 
-   ```bash
-   npm install
-   ```
+![07952b57b4a0d183a47de2031a70655.jpg](07952b57b4a0d183a47de2031a70655.jpg)
 
-2. Start the app
+![86de4effb5e2b68f7717d0c8e8614d1.jpg](86de4effb5e2b68f7717d0c8e8614d1.jpg)
 
-   ```bash
-    npx expo start
-   ```
+## Key Features✨
 
-In the output, you'll find options to open the app in a
+- **Expense Recording**: Users can log their daily expenses, categorize them (e.g., food, transportation, entertainment), and set custom tags.
+- **User Registration & Login**: Secure user sign-up and authentication via Firebase.
+- **Expense Overview Page**: Displays a list of recorded expenses with filters for date, category, and tags.
+- **Data Analytics & Reports**: Provides users with data visualization tools, including pie charts and bar graphs to analyze spending patterns.
+- **Database Integration**: User data, including expenses, categories, and reports, is stored securely in SQLite.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Tech Stack 🛠️
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Frontend**: React Native
+- **Backend**: Node.js
+- **Database**: SQLite
+- **API**: RESTful
 
-## Get a fresh project
+## Features Completed So Far 🏗️
 
-When you're ready, run:
+1. **Expense Overview**: Displays all expenses from the past seven days as well as a summary of income and expenses for the current month. Each bill entry can be edited directly from this page.
+2. **Create Bill**: By clicking the floating action button (FAB) in the bottom-right corner, users can enter the bill creation interface, where they can choose the category, bill name, amount, description, and other relevant details.
+3. **Database Design**: Fully designed the **SQLite** table structure, including three tables: `expense`, `category`, and `assets`. CRUD (Create, Read, Update, Delete) operations have been implemented for each table.
 
-```bash
-npm run reset-project
-```
+## Upcoming Features 💡
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- **Budgeting**: Users will be able to set monthly budgets for different categories and get alerts when they exceed their budget.
+- **Push Notifications**: Reminders to log daily expenses or alert users when nearing budget limits.
+- **Data Analytics**: Enhanced data analysis tools to display user spending trends with charts, graphs, and reports.
+- **Export Data**: Ability to export expense data as CSV or PDF for external use.
 
-## Learn more
+## Future Roadmap 🚀
 
-To learn more about developing your project with Expo, look at the following resources:
+- **Version 1.0**: Full expense tracking functionality with category management and expense history.
+- **Version 1.1**: Budgeting features and push notifications.
+- **Version 2.0**: Advanced data analytics and exporting functionality (CSV, PDF).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Contribution Guidelines 🤝
 
-## Join the community
+Contributions are welcome! Feel free to open issues or submit pull requests. Suggestions for new features or improvements are also appreciated.
 
-Join our community of developers creating universal apps.
+## Contact Information ✉️
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For any questions or inquiries, feel free to reach out via Hongyu.Zhu.zz@gmail.com or create an issue on this GitHub repository.
