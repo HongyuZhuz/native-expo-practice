@@ -6,9 +6,10 @@
 
 🔗 Current Status: Under development 🚧
 
-![07952b57b4a0d183a47de2031a70655.jpg](07952b57b4a0d183a47de2031a70655.jpg)
-
-![86de4effb5e2b68f7717d0c8e8614d1.jpg](86de4effb5e2b68f7717d0c8e8614d1.jpg)
+<div style="display: flex; justify-content: space-between;">
+  <img src="07952b57b4a0d183a47de2031a70655.jpg" alt="Image 1" style="width: 45%; margin-right: 10;"/>
+  <img src="86de4effb5e2b68f7717d0c8e8614d1.jpg" alt="Image 2" style="width: 45%; margin-left: 10px;"/>
+</div>
 
 ## Key Features✨
 
